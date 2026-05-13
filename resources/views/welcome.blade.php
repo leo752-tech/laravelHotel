@@ -1,5 +1,5 @@
 <x-layout>
-    <div class="hero min-h-[70vh]" style="background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');">
+    <div class="hero min-h-[70vh]" style="background-image: asset('sfondoUp.png');">
         <div class="hero-overlay bg-opacity-60"></div>
         <div class="hero-content text-center text-neutral-content">
             <div class="max-w-md">
