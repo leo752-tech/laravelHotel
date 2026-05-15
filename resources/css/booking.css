@@ -1,0 +1,16 @@
+/* resources/css/booking.css */
+
+/* Nasconde la scrollbar del calendario ma mantiene lo scroll orizzontale */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Altezza minima della pagina */
+body {
+    min-height: max(884px, 100dvh);
+}

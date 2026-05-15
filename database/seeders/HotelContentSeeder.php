@@ -136,6 +136,8 @@ class HotelContentSeeder extends Seeder
             ]);
         }
 
+        
+
         // --- RECORD 1: Prenotazione passata con Recensione ---
         $booking1 = Booking::create([
             'userId'         => 1,

@@ -16,6 +16,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Cashier\Cashier;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Stripe\Stripe;
+use Stripe\PaymentIntent;
 
 class BookingController extends Controller
 {
@@ -146,7 +148,7 @@ class BookingController extends Controller
             $currentDate->addDay();
         }
         session(['availableRooms' => $availableRooms]);
-        return view('bookings.results', [
+        return view('bookings.calendar', [
             'rooms' => $availableRooms,
             'checkIn' => $checkIn,
             'checkOut' => $checkOut,
@@ -185,17 +187,35 @@ class BookingController extends Controller
         if ($guests > $room->beds) {
             return back()->with('error', 'Questa camera non ha abbastanza posti per il numero di ospiti selezionato.');
         }
+        
 
+
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+
+        // CREAZIONE DEL PAYMENT INTENT (Addebito immediato)
+        $paymentIntent = PaymentIntent::create([
+            'amount' => (int) ($totalPrice * 100), // Stripe vuole i centesimi
+            'currency' => 'eur',
+            'payment_method_types' => ['card'],
+            'metadata' => [
+                'roomId' => $room->id,
+                'checkIn' => $checkIn,
+                'checkOut' => $checkOut
+            ],
+        ]);
         $services = Service::all();
-        return view('bookings.detailRoom', compact(
-            'room',
-            'checkIn',
-            'checkOut',
-            'nights',
-            'services',
-            'guests',
-            'totalPrice'
-        ));
+
+
+        return view('bookings.newCheckOut', [
+            'clientSecret' => $paymentIntent->client_secret,
+            'totalPrice' => $totalPrice,
+            'room' => $room,
+            'checkIn' => $checkIn,
+            'checkOut' => $checkOut,
+            'nights' => $nights,
+            'services' => $services,
+            'guests' => $guests
+        ]);
     }
     public function checkout(Request $request)
     {
@@ -203,6 +223,7 @@ class BookingController extends Controller
         $roomId = session('roomId');
         $room = Room::findOrFail($roomId);
 
+        $beds = session('search_guests');
         if (!session()->has('search_check_in')) {
             return redirect()->route('calendar')->with('error', 'Sessione scaduta. Ricomincia la ricerca.');
         }
@@ -229,27 +250,30 @@ class BookingController extends Controller
 
         session(['totalPrice' => $totalPrice]);
 
-        $stripeAmount = (int) ($totalPrice * 100);
+        // Inizializza Stripe
+        Stripe::setApiKey(env('STRIPE_SECRET'));
 
-        return $request->user()->checkoutCharge(
-            $stripeAmount,
-            'Prenotazione camera ' . $room->name,
-            1,
-            [
-                'success_url' => route('booking.success') . '?session_id={CHECKOUT_SESSION_ID}',
-                'cancel_url' => route('calendar'),
-                'invoice_creation' => [
-                    'enabled' => true],
-                'metadata' => [
-                    'roomId' => $room->id,
-                    'checkIn' => $checkIn,
-                    'checkOut' => $checkOut,
-                    'extras' => json_encode($selectedExtrasIds), // Passiamo i servizi extra nei metadati
-                    'specialOfferId' => session('specialOfferId')
-                ]
-            ]
-        );
+        // CREAZIONE DEL PAYMENT INTENT (Addebito immediato)
+        $paymentIntent = PaymentIntent::create([
+            'amount' => (int) ($totalPrice * 100), // Stripe vuole i centesimi
+            'currency' => 'eur',
+            'payment_method_types' => ['card'],
+            'metadata' => [
+                'roomId' => $room->id,
+                'checkIn' => $checkIn,
+                'checkOut' => $checkOut,
+                'extras' => json_encode($selectedExtrasIds),
+            ],
+        ]);
 
+        return view('bookings.newCheckOut', [
+            'clientSecret' => $paymentIntent->client_secret,
+            'totalPrice' => $totalPrice,
+            'room' => $room,
+            'checkIn' => $checkIn,
+            'checkOut' => $checkOut,
+            'guests' => $beds
+        ]);
     }
 
     public function success(Request $request)
