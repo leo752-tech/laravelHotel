@@ -5,7 +5,7 @@
             <div class="max-w-md">
                 <h1 class="mb-5 text-5xl font-bold uppercase tracking-widest">Luxury Hotel</h1>
                 <p class="mb-5 text-lg italic">Dove l'eleganza incontra il comfort. Vivi un'esperienza indimenticabile nel cuore della città.</p>
-                <a href="{{ route('calendar') }}" class="btn btn-primary px-8">Prenota Ora</a>
+                <a href="{{ route('calendar') }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary px-8">Prenota Ora</a>
             </div>
         </div>
     </div>

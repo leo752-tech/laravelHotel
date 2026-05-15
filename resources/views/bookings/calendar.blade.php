@@ -1,4 +1,4 @@
-<x-layout>
+<x-layoutBooking>
     <div class="py-12 bg-base-200 min-h-screen">
         <div class="max-w-4xl mx-auto px-4">
 

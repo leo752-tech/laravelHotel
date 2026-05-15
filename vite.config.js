@@ -10,11 +10,5 @@ export default defineConfig({
         }),
         tailwindcss(),
     ],
-    server: {
-        host: '0.0.0.0', // Permette a Vite di ascoltare sulla rete
-        port: 5173,
-        hmr: {
-            host: '192.168.1.15', // <--- METTI QUI IL TUO INDIRIZZO IP LOCALE
-        },
-    },
+    
 });
