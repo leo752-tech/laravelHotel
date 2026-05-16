@@ -11,3 +11,29 @@
     --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
+.flatpickr-calendar.inline {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+
+/* Definiamo l'animazione Ken Burns (Zoom lento) */
+@keyframes kenburns {
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.1);
+        /* Zoom finale del 10% */
+    }
+}
+
+/* Classe utility per applicare l'animazione */
+.animate-kenburns {
+    /* Durata 10s per coprire il tempo di visualizzazione della slide, 
+           ease-out per un'estetica più morbida, infinità */
+    animation: kenburns 10s ease-out infinite;
+}
+

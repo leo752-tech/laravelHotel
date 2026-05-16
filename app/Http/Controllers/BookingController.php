@@ -150,15 +150,15 @@ class BookingController extends Controller
         session(['availableRooms' => $availableRooms]);
         return view('bookings.calendar', [
             'rooms' => $availableRooms,
-            'checkIn' => $checkIn,
-            'checkOut' => $checkOut,
+            'checkIn' => $checkIn->format('Y-m-d'),
+            'checkOut' => $checkOut->format('Y-m-d'),
             'nights' => $nights,
             'discount' => $discount ?? null,
             'guests' => $request->beds_required
         ]);
     }
 
-    public function showDetail($id)
+    public function summary($id)
     {
         
         if (!session()->has('search_check_in')) {
@@ -210,8 +210,8 @@ class BookingController extends Controller
             'clientSecret' => $paymentIntent->client_secret,
             'totalPrice' => $totalPrice,
             'room' => $room,
-            'checkIn' => $checkIn,
-            'checkOut' => $checkOut,
+            'checkIn' => $checkIn->format('Y-m-d'),
+            'checkOut' => $checkOut->format('Y-m-d'),
             'nights' => $nights,
             'services' => $services,
             'guests' => $guests

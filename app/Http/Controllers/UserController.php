@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Guest;
+use App\Models\Review;
 use App\Models\Room;
+use App\Models\Service;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +17,9 @@ class UserController extends Controller
     public function home()
     {
         $rooms = Room::all();
-        return view('welcome', compact('rooms'));
+        $services = Service::all();
+        $reviews = Review::all();
+        return view('welcome', compact('rooms', 'services', 'reviews'));
     }
 
     public function index()

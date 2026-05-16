@@ -97,7 +97,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->as('admin.')->group(funct
 //make a booking, alcune da mettere nel MIDDLEWARE
 Route::get('/calendar', [BookingController::class, 'showCalendar'])->name('calendar');
 Route::post('/search', [BookingController::class, 'search'])->name('search');
-Route::get('/detailRoom/{id}', [BookingController::class, 'showDetail'])->name('detailRoom');
+Route::get('/summary/{id}', [BookingController::class, 'summary'])->name('summary');
 Route::get('/payment', [/* da scrivere*/]);
 
 Route::get('/calendar/{id}', [BookingController::class, 'showCalendarOffer'])->name('calendarOffer');

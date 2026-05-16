@@ -17,7 +17,6 @@
                         <div class="bg-white rounded shadow-sm border border-gray-200 p-5">
                             <div class="flex justify-between items-center mb-4">
                                 <h2 class="text-sm font-bold text-[#003366]">La tua ricerca</h2>
-                                <a href="#" class="text-xs text-gray-500 hover:text-blue-600 flex items-center gap-1">modifica <i class="fa-solid fa-pen-to-square"></i></a>
                             </div>
                             <div class="space-y-3">
                                 <div class="flex items-center gap-3 border border-gray-200 p-2 rounded text-sm text-gray-700">

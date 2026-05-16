@@ -93,7 +93,7 @@ class HotelContentSeeder extends Seeder
 
         Room::create([
             'name' => 'Stanza 202',
-            'beds' => 1,
+            'beds' => 3,
             'price' => 90,
             'type' => 'Standard',
             'description' => 'Affaccio corte interna, molto silenziosa'
