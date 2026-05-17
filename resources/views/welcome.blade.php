@@ -249,10 +249,10 @@
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-sm font-bold">
                                 {{-- Iniziale dell'utente --}}
-                                {{ substr($review->user->name ?? 'O', 0, 1) }}
+                                {{ substr($review->user->firstName ?? 'O', 0, 1) }}
                             </div>
                             <span class="text-sm font-bold uppercase tracking-widest text-slate-400">
-                                {{ $review->user->name ?? 'Ospite' }}
+                                {{ $review->user->lastName ?? 'Ospite' }}
                             </span>
                         </div>
 

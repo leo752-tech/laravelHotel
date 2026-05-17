@@ -47,7 +47,7 @@
             </div>
             @endauth
 
-            <a href="/calendar" class="btn btn-primary bg-emerald-700 rounded-full px-6 border-none shadow-lg hover:scale-105 transition-transform">Prenota</a>
+            <a href="/calendar" target="_blank" class="btn btn-primary bg-emerald-700 rounded-full px-6 border-none shadow-lg hover:scale-105 transition-transform">Prenota</a>
         </div>
 
     </div>
