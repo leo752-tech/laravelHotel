@@ -38,7 +38,9 @@ Route::get('/servizi', [ServiceController::class, 'indexUser']);
 Route::get('/recensioni', [ReviewController::class, 'indexHome']);
 Route::get('/specialOffer', [SpecialOfferController::class, 'index']);
 Route::get('/camere', [RoomController::class, 'indexUser']);
-Route::get('/detailRoomGuest/{id}', [RoomController::class, 'showDetailGuest'])->name('detailRoomGuest');
+Route::get('/detailRoomGuest/{id}', [RoomController::class, 'showDetailGuest'])->name('detailRoom');
+Route::get('/territorio', [UserController::class, 'showTerritory'])->name('territory');
+Route::get('/allRooms', [RoomController::class, 'showAllRooms'])->name('allRooms');
 
 
 

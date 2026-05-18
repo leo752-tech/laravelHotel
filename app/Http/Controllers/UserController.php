@@ -160,4 +160,10 @@ class UserController extends Controller
     {
         
     }
+
+    public function showTerritory() 
+    {
+        return view('territory');
+        
+    }
 }

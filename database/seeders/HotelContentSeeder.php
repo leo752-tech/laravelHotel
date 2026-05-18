@@ -70,16 +70,16 @@ class HotelContentSeeder extends Seeder
 
         // 2. Servizi
         Service::create([
-            'name' => 'Spa',
-            'description' => 'Sauna e relax con percorso idromassaggio',
+            'name' => 'Noleggio e convenzioni attrezzatura',
+            'description' => 'Dimentica le code e lo stress. Prenota i tuoi sci, lo snowboard o le e-bike direttamente in hotel grazie alle nostre partnership esclusive con i migliori noleggi del territorio. Al tuo ritorno, potrai depositare tutto nella nostra Ski Room riscaldata e videosorvegliata.',
             'price' => 50,
-            'pathImage' => 'service/spa2.jpg'
+            'pathImage' => 'service/noleggio.webp'
         ]);
         Service::create([
-            'name' => 'Wifi',
-            'description' => 'Connessione in fibra alta velocità in tutta la struttura',
+            'name' => 'Colazione',
+            'description' => 'Comincia la giornata con il profumo dei dolci fatti in casa, torte della tradizione abruzzese, confetture locali, formaggi freschi e salumi del territorio. Una ricca colazione a buffet, dolce e salata, pensata per darti la giusta carica prima di esplorare le piste o i sentieri.',
             'price' => 5,
-            'pathImage' => 'service/wifi.jpg'
+            'pathImage' => 'service/colazione2.jpeg'
         ]);
 
         // 3. Camere

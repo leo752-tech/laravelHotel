@@ -21,6 +21,13 @@ class RoomController extends Controller
         $rooms = Room::with('images')->get();
         return view('room.index', compact('rooms'));
     }
+
+    public function showAllRooms()
+    {
+        $rooms = Room::with('images')->get();
+        $i=0;
+        return view('listRoom', compact('rooms','i'));
+    }
    
     public function showDetailGuest($id)
     {
