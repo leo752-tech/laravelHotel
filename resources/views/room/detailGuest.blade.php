@@ -2,7 +2,7 @@
     <section class="relative h-screen w-full overflow-hidden flex items-center justify-center">
         <!-- Sfondo con immagine e animazione -->
         <div class="absolute inset-0 z-0 overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=2050&auto=format&fit=crop"
+            <img src="{{asset('storage/' . $room->images->first()->pathImage)}}"
                 alt="Suite Imperiale Vista Interna"
                 class="w-full h-full object-cover animate-hero-zoom">
             <!-- Overlay scuro e caldo -->
@@ -30,30 +30,14 @@
 
             <!-- Galleria/Slider Grande (9 Colonne su 12 per essere quasi a tutto schermo) -->
             <div class="col-span-12 md:col-span-9 relative group overflow-hidden shadow-lg aspect-[16/10] md:aspect-[16/9] bg-stone-900">
-
+                @foreach($room->images as $image)
                 <!-- Immagine Slider 1 (Attiva di default) -->
-                <img id="slide-0" src="https://images.unsplash.com/photo-1591088398332-8a7791972843?q=80&w=2074&auto=format&fit=crop"
+                <img id="slide-0" src="{{ asset('storage/' . $image->pathImage)}}"
                     alt="Particolare Letto e Design"
                     class="room-slide absolute inset-0 w-full h-full object-cover opacity-100 slide-fade cursor-zoom-in"
-                    onclick="openLightboxFromSlider(0)">
+                    onclick="openLightboxFromSlider($loop->index)">
 
-                <!-- Immagine Slider 2 -->
-                <img id="slide-1" src="https://images.unsplash.com/photo-1540518614846-7eded433c457?q=80&w=2070&auto=format&fit=crop"
-                    alt="La Terrazza Privata sul Golfo"
-                    class="room-slide absolute inset-0 w-full h-full object-cover opacity-0 slide-fade cursor-zoom-in"
-                    onclick="openLightboxFromSlider(1)">
-
-                <!-- Immagine Slider 3 -->
-                <img id="slide-2" src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=2070&auto=format&fit=crop"
-                    alt="Sala da Bagno in Pregiato Marmo"
-                    class="room-slide absolute inset-0 w-full h-full object-cover opacity-0 slide-fade cursor-zoom-in"
-                    onclick="openLightboxFromSlider(2)">
-
-                <!-- Immagine Slider 4 -->
-                <img id="slide-3" src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=2070&auto=format&fit=crop"
-                    alt="Comfort e Tessuti Organici"
-                    class="room-slide absolute inset-0 w-full h-full object-cover opacity-0 slide-fade cursor-zoom-in"
-                    onclick="openLightboxFromSlider(3)">
+                @endforeach
 
                 <!-- Gradiente scuro di controllo per rendere visibili le frecce su qualsiasi foto -->
                 <div class="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>

@@ -50,26 +50,26 @@
     <!-- 3. SEZIONE VIRTUALIZZAZIONE CAMERE (Layout Alternato) -->
     <section class="max-w-7xl mx-auto px-4 pb-24 space-y-20 md:space-y-32">
         @foreach($rooms as $room)
-        @if($i%2==0)
+        @if($loop->index % 2 == 0)
 
-        <!-- Camera 1: Immagine a Sinistra, Testo a Destra -->
+        <!-- Camera 1: Immagine a Sinistar, Testo a Destra -->
         <div class="w-full grid md:grid-cols-12 items-stretch min-h-[60vh] md:min-h-[85vh] bg-stone-50 overflow-hidden">
 
-            <!-- Colonna Immagine: Massima dimensione, completamente attaccata ai bordi -->
+            <!-- Colonna Immagine -->
             <div class="col-span-12 md:col-span-8 relative overflow-hidden group min-h-[450px] md:min-h-0">
-                <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=1974&auto=format&fit=crop"
-                    alt="Camere Deluxe"
+                <img src="{{asset('storage/' . $room->images->first()->pathImage)}}"
+                    alt="{{ $room->name }}"
                     class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out">
             </div>
 
-            <!-- Colonna Contenuto: Pulita ed elegante con solo Nome, Descrizione e CTA -->
+            <!-- Colonna Contenuto -->
             <div class="col-span-12 md:col-span-4 flex flex-col justify-center px-8 py-16 md:p-12 lg:p-16 space-y-6">
                 <h3 class="text-3xl md:text-4xl lg:text-5xl font-serif tracking-wide text-stone-900 leading-tight">
                     {{$room->name}}
                 </h3>
 
                 <p class="text-stone-600 font-light leading-relaxed text-base md:text-lg">
-                   {{$room->description}}
+                    {{$room->description}}
                 </p>
 
                 <div class="pt-4">
@@ -79,12 +79,13 @@
                 </div>
             </div>
         </div>
-        {{$i+=1}}
-        @else
-        <!-- Camera 2: Testo a Sinistra, Immagine a Destra (Invertito su Desktop) -->
-        <div class="grid md:grid-cols-12 gap-8 md:gap-12 items-center">
 
-            <!-- Colonna Contenuto: Pulita ed elegante con solo Nome, Descrizione e CTA -->
+        @else
+
+        <!-- Camera 2: Testo a Sinistra, Immagine a Destra (Sistemata ed equivalente alla prima) -->
+        <div class="w-full grid md:grid-cols-12 items-stretch min-h-[60vh] md:min-h-[85vh] bg-stone-50 overflow-hidden">
+
+            <!-- Colonna Contenuto (Viene prima nell'HTML, stando a sinistra su Desktop) -->
             <div class="col-span-12 md:col-span-4 flex flex-col justify-center px-8 py-16 md:p-12 lg:p-16 space-y-6">
                 <h3 class="text-3xl md:text-4xl lg:text-5xl font-serif tracking-wide text-stone-900 leading-tight">
                     {{$room->name}}
@@ -101,14 +102,13 @@
                 </div>
             </div>
 
-            <!-- Colonna Immagine: Massima dimensione, completamente attaccata ai bordi -->
+            <!-- Colonna Immagine (Viene dopo nell'HTML, stando a destra su Desktop) -->
             <div class="col-span-12 md:col-span-8 relative overflow-hidden group min-h-[450px] md:min-h-0">
-                <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=1974&auto=format&fit=crop"
-                    alt="Camere Deluxe"
+                <img src="{{asset('storage/' . $room->images->first()->pathImage)}}"
+                    alt="{{ $room->name }}"
                     class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 ease-out">
             </div>
         </div>
-        {{$i+=1}}
         @endif
         @endforeach
 

@@ -86,52 +86,25 @@
             x-intersect:leave="shown = false"
             :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'">
             <h2 class="text-3xl font-light text-slate-900">I Nostri Alloggi</h2>
-            <button href="{{route('allRooms')}}" class="text-slate-800 font-medium hover:text-slate-500 transition-colors flex items-center gap-2 group/btn">
-                Richiedi servizio
-                <i class="fa-solid fa-arrow-right text-sm transform transition-transform group-hover/btn:translate-x-1"></i>
-            </button>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             @foreach($rooms as $room)
-            <div class="group cursor-pointer transition-all duration-700 ease-out"
+            <div class="group transition-all duration-700 ease-out"
                 style="transition-delay: {{ $loop->index * 150 }}ms;"
                 x-data="{ 
-                    shown: false,
-                    openModal: false,
-                    activeSlide: 0, 
-                    slides: [
-                        @forelse($room->images as $image)
-                            '{{ asset('storage/' . $image->pathImage) }}',
-                        @empty
-                            'https://via.placeholder.com/600x400/eeeeee/999999?text=Nessuna+Foto'
-                        @endforelse
-                    ] 
-                 }"
+                shown: false,
+                mainImage: '{{ $room->images->first() ? asset('storage/' . $room->images->first()->pathImage) : 'https://via.placeholder.com/600x400/eeeeee/999999?text=Nessuna+Foto' }}'
+             }"
                 x-intersect:enter="shown = true"
                 x-intersect:leave="shown = false"
-                :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'"
-                @click="openModal = true"
-                x-init="$watch('openModal', value => document.body.style.overflow = value ? 'hidden' : '')">
+                :class="shown ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'">
 
                 {{-- CARD VISIBILE SULLA HOME --}}
                 <div class="relative w-full h-80 overflow-hidden rounded-xl mb-4 bg-gray-200">
-                    <img :src="slides[activeSlide]"
+                    <img :src="mainImage"
                         alt="{{ $room->name }}"
                         class="w-full h-full object-cover transition-transform duration-700 ease-in-out group-hover:scale-105" />
-
-                    <template x-if="slides.length > 1">
-                        <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <button @click.stop="activeSlide = activeSlide === 0 ? slides.length - 1 : activeSlide - 1"
-                                class="bg-white/90 text-slate-800 hover:bg-white w-8 h-8 rounded-full flex items-center justify-center shadow-md transition-all transform hover:scale-110">
-                                <i class="fa-solid fa-chevron-left text-xs"></i>
-                            </button>
-                            <button @click.stop="activeSlide = activeSlide === slides.length - 1 ? 0 : activeSlide + 1"
-                                class="bg-white/90 text-slate-800 hover:bg-white w-8 h-8 rounded-full flex items-center justify-center shadow-md transition-all transform hover:scale-110">
-                                <i class="fa-solid fa-chevron-right text-xs"></i>
-                            </button>
-                        </div>
-                    </template>
                 </div>
 
                 <div class="flex justify-between items-start">
@@ -149,125 +122,15 @@
                     </div>
                 </div>
 
-                {{-- POP-UP DETTAGLIATO (Teleportato fuori per evitare conflitti di layout) --}}
-                <template x-teleport="body">
-                    <div x-show="openModal"
-                        class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10 overflow-y-auto"
-                        style="display: none;">
-
-                        {{-- Sfondo scuro sfocato (Backdrop) --}}
-                        <div x-show="openModal"
-                            x-transition:enter="transition ease-out duration-300"
-                            x-transition:enter-start="opacity-0"
-                            x-transition:enter-end="opacity-100"
-                            x-transition:leave="transition ease-in duration-200"
-                            x-transition:leave-start="opacity-100"
-                            x-transition:leave-end="opacity-0"
-                            class="fixed inset-0 bg-black/60 backdrop-blur-md"
-                            @click="openModal = false"></div>
-
-                        {{-- Finestra del Pop-up --}}
-                        <div x-show="openModal"
-                            x-transition:enter="transition ease-out duration-300"
-                            x-transition:enter-start="opacity-0 scale-95 translate-y-4"
-                            x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-                            x-transition:leave="transition ease-in duration-200"
-                            x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-                            x-transition:leave-end="opacity-0 scale-95 translate-y-4"
-                            class="relative bg-white rounded-2xl shadow-2xl max-w-5xl w-full overflow-hidden z-10 grid grid-cols-1 md:grid-cols-2 h-auto max-h-[90vh] md:h-[80vh]">
-
-                            {{-- Bottone Chiudi --}}
-                            <button @click="openModal = false" class="absolute top-4 right-4 z-30 bg-black/50 text-white hover:bg-black/80 transition-colors w-10 h-10 rounded-full flex items-center justify-center">
-                                <i class="fa-solid fa-xmark text-lg"></i>
-                            </button>
-
-                            {{-- Sinistra: Slider Immagini Ingrandito --}}
-                            <div class="relative h-64 md:h-full bg-slate-900 flex items-center justify-center overflow-hidden">
-                                <img :src="slides[activeSlide]"
-                                    alt="{{ $room->name }}"
-                                    class="w-full h-full object-cover" />
-
-                                <template x-if="slides.length > 1">
-                                    <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-4 z-20">
-                                        <button @click.stop="activeSlide = activeSlide === 0 ? slides.length - 1 : activeSlide - 1"
-                                            class="bg-white/90 text-slate-800 hover:bg-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-transform transform hover:scale-110">
-                                            <i class="fa-solid fa-chevron-left"></i>
-                                        </button>
-                                        <button @click.stop="activeSlide = activeSlide === slides.length - 1 ? 0 : activeSlide + 1"
-                                            class="bg-white/90 text-slate-800 hover:bg-white w-10 h-10 rounded-full flex items-center justify-center shadow-lg transition-transform transform hover:scale-110">
-                                            <i class="fa-solid fa-chevron-right"></i>
-                                        </button>
-                                    </div>
-                                </template>
-
-                                <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-20">
-                                    <template x-for="(slide, index) in slides" :key="index">
-                                        <span class="h-1.5 rounded-full transition-all duration-300"
-                                            :class="activeSlide === index ? 'bg-white w-4' : 'bg-white/50'"></span>
-                                    </template>
-                                </div>
-                            </div>
-
-                            {{-- Destra: Dettagli, Descrizione Estesa e Servizi --}}
-                            <div class="p-8 md:p-12 flex flex-col justify-between overflow-y-auto h-full max-h-[calc(90vh-16rem)] md:max-h-full">
-                                <div class="space-y-6">
-                                    <div>
-                                        <span class="text-xs font-bold text-emerald-600 uppercase tracking-widest bg-emerald-50 px-3 py-1 rounded-full">Suite Esperienza</span>
-                                        <h3 class="text-3xl font-light text-slate-900 mt-3">{{ $room->name }}</h3>
-                                    </div>
-
-                                    <div class="w-12 h-0.5 bg-slate-200"></div>
-
-                                    <div class="space-y-3">
-                                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">L'Alloggio</h4>
-                                        <p class="text-slate-600 font-light leading-relaxed text-sm md:text-base">
-                                            {{ $room->description ?? 'Una camera curata nei minimi dettagli per garantire il massimo riposo. Arredata in stile moderno, offre ampi spazi luminosi e finiture di pregio pensate per il tuo comfort.' }}
-                                        </p>
-                                    </div>
-
-                                    {{-- Griglia Servizi della Camera (Look Professionale) --}}
-                                    <div class="space-y-3 pt-2">
-                                        <h4 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Dotazioni incluse</h4>
-                                        <div class="grid grid-cols-2 gap-3 text-slate-600 text-xs font-light">
-                                            <div class="flex items-center gap-2">
-                                                <i class="fa-solid fa-wifi text-emerald-600 w-4"></i> Wi-Fi Alta Velocità
-                                            </div>
-                                            <div class="flex items-center gap-2">
-                                                <i class="fa-solid fa-snowflake text-emerald-600 w-4"></i> Climatizzazione autonoma
-                                            </div>
-                                            <div class="flex items-center gap-2">
-                                                <i class="fa-solid fa-tv text-emerald-600 w-4"></i> Smart TV con canali esteri
-                                            </div>
-                                            <div class="flex items-center gap-2">
-                                                <i class="fa-solid fa-mug-hot text-emerald-600 w-4"></i> Set Cortesia & Macchina Caffè
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {{-- Footer del Pop-up con Prezzo e Call To Action --}}
-                                <div class="mt-8 pt-6 border-t border-slate-100 flex items-center justify-between gap-4 bg-white sticky bottom-0">
-                                    <div>
-                                        <p class="text-slate-400 text-xs font-light">Miglior tariffa disponibile</p>
-                                        <p class="text-slate-900 font-semibold text-2xl">Da €{{ $room->price }} <span class="text-xs font-light text-slate-400">/notte</span></p>
-                                    </div>
-                                    <a href="{{ route('calendar') }}" target="_blank" rel="noopener noreferrer" class="px-6 py-3 bg-slate-900 text-white rounded-full font-medium text-xs tracking-wider uppercase hover:bg-emerald-600 transition-colors duration-300 shadow-md">
-                                        Prenota Ora
-                                    </a>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </template>
-
             </div>
             @endforeach
 
         </div>
-        <a href="{{ route('allRooms') }}" class="inline-block px-8 py-3 mt-4 text-sm font-medium tracking-wider uppercase border border-slate-800 text-slate-800 rounded-full hover:bg-slate-800 hover:text-white transition-all duration-300">
-            Scopri di più
-        </a>
+        <div class="text-center mt-12">
+            <a href="{{ route('allRooms') }}" class="inline-block px-8 py-3 text-sm font-medium tracking-wider uppercase border border-slate-800 text-slate-800 rounded-full hover:bg-slate-800 hover:text-white transition-all duration-300">
+                Scopri di più
+            </a>
+        </div>
     </section>
 
     {{-- SEZIONE SERVIZI --}}
@@ -296,11 +159,7 @@
                         alt="{{ $service->name }}"
                         class="w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105" />
 
-                    @if($service->price > 0)
-                    <div class="absolute top-4 {{ $loop->iteration % 2 == 0 ? 'left-4' : 'right-4' }} bg-white/90 backdrop-blur-md text-slate-900 px-4 py-2 rounded-full text-sm font-semibold shadow-sm">
-                        €{{ $service->price }}
-                    </div>
-                    @endif
+
                 </div>
 
                 <div class="w-full md:w-1/2">
