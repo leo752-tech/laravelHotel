@@ -1,13 +1,18 @@
 <x-layout>
-    <section class="relative h-screen w-full overflow-hidden flex items-center justify-center">
+    <!-- Aggiunta la classe animate-fade-in per l'entrata della pagina -->
+    <section class="relative h-screen w-full overflow-hidden flex items-center justify-center animate-fade-in">
+
         <!-- Sfondo con immagine e animazione -->
-        <div class="absolute inset-0 z-0 overflow-hidden">
-            <img src="{{asset('storage/' . $room->images->first()->pathImage)}}"
+        <!-- Aggiunto un colore di sfondo (bg-stone-900) per evitare flash bianchi durante il caricamento -->
+        <div class="absolute inset-0 z-0 overflow-hidden bg-stone-900">
+            <img src="{{ asset('storage/' . $room->images->first()->pathImage) }}"
                 alt="Suite Imperiale Vista Interna"
-                class="w-full h-full object-cover animate-hero-zoom">
+                class="w-full h-full object-cover origin-center animate-slow-zoom">
+
             <!-- Overlay scuro e caldo -->
-            <div class="absolute inset-0 bg-black/35 backdrop-blur-[1px]"></div>
+            <div class="absolute inset-0 bg-black/35 backdrop-blur-[1px] pointer-events-none"></div>
         </div>
+
     </section>
 
     <!-- 2. TRAFILETTO DESCRITTIVO SINTETICO -->
@@ -31,35 +36,35 @@
             <!-- Galleria/Slider Grande (9 Colonne su 12 per essere quasi a tutto schermo) -->
             <div class="col-span-12 md:col-span-9 relative group overflow-hidden shadow-lg aspect-[16/10] md:aspect-[16/9] bg-stone-900">
                 @foreach($room->images as $image)
-                <!-- Immagine Slider 1 (Attiva di default) -->
-                <img id="slide-0" src="{{ asset('storage/' . $image->pathImage)}}"
+                <!-- Immagine Slider -->
+                <img id="slide-{{ $loop->index }}"
+                    src="{{ asset('storage/' . $image->pathImage)}}"
                     alt="Particolare Letto e Design"
-                    class="room-slide absolute inset-0 w-full h-full object-cover opacity-100 slide-fade cursor-zoom-in"
-                    onclick="openLightboxFromSlider($loop->index)">
-
+                    class="room-slide absolute inset-0 w-full h-full object-cover slide-fade cursor-zoom-in transition-opacity duration-500 {{ $loop->first ? 'opacity-100 z-10' : 'opacity-0 z-0 pointer-events-none' }}"
+                    onclick="openLightboxFromSlider({{ $loop->index }})">
                 @endforeach
 
                 <!-- Gradiente scuro di controllo per rendere visibili le frecce su qualsiasi foto -->
-                <div class="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
-                <div class="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                <div class="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20"></div>
+                <div class="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20"></div>
 
                 <!-- Freccia Sinistra -->
-                <button id="slider-prev" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/90 text-white hover:text-stone-900 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center backdrop-blur-sm transition-all shadow-md z-20" aria-label="Immagine precedente">
+                <button id="slider-prev" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/90 text-white hover:text-stone-900 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center backdrop-blur-sm transition-all shadow-md z-30" aria-label="Immagine precedente">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
                     </svg>
                 </button>
 
                 <!-- Freccia Destra -->
-                <button id="slider-next" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/90 text-white hover:text-stone-900 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center backdrop-blur-sm transition-all shadow-md z-20" aria-label="Immagine successiva">
+                <button id="slider-next" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/90 text-white hover:text-stone-900 w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center backdrop-blur-sm transition-all shadow-md z-30" aria-label="Immagine successiva">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                     </svg>
                 </button>
 
                 <!-- Indicatore numerico discreto in basso a destra dell'immagine -->
-                <div class="absolute bottom-4 right-4 bg-black/50 backdrop-blur-md px-3 py-1 text-xs text-stone-200 tracking-widest uppercase z-20 font-medium">
-                    <span id="slider-counter">1 / 4</span>
+                <div class="absolute bottom-4 right-4 bg-black/50 backdrop-blur-md px-3 py-1 text-xs text-stone-200 tracking-widest uppercase z-30 font-medium">
+                    <span id="slider-counter">1 / {{ $room->images->count() }}</span>
                 </div>
             </div>
 
@@ -70,7 +75,7 @@
                 </h3>
                 <p class="text-stone-600 font-light text-sm md:text-base leading-relaxed">
                     Ogni angolo è pensato per farti sentire come a casa: arredi semplici e funzionali in legno chiaro, finestre luminose che si affacciano sulla tranquillità del borgo, un comodo armadio per i tuoi bagagli e un bagno privato curato, dotato di tutto il necessario per rigenerarsi dopo una giornata di viaggio. </p>
-                
+
                 <div class="pt-4">
                     <a href="#contatti" class="inline-block text-center bg-stone-900 text-white px-6 py-3 text-xs font-semibold uppercase tracking-widest hover:bg-amber-800 transition-colors duration-300 shadow">
                         Richiedi Disponibilità

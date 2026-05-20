@@ -1,4 +1,7 @@
 @import 'tailwindcss';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
@@ -36,4 +39,36 @@
            ease-out per un'estetica più morbida, infinità */
     animation: kenburns 10s ease-out infinite;
 }
+/* Aggiungi le tue animazioni personalizzate qui sotto */
+@layer utilities {
 
+    /* Definisci i fotogrammi chiave (keyframes) */
+    @keyframes fade-in {
+        0% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes slow-zoom {
+        0% {
+            transform: scale(1);
+        }
+
+        100% {
+            transform: scale(1.15);
+        }
+    }
+
+    /* Crea le classi da usare nell'HTML */
+    .animate-fade-in {
+        animation: fade-in 1.5s ease-out forwards;
+    }
+
+    .animate-slow-zoom {
+        animation: slow-zoom 25s ease-out forwards;
+    }
+}

@@ -1,11 +1,11 @@
 <x-layout>
-    <section class="relative h-screen w-full overflow-hidden flex items-center justify-center">
+    <section class="relative h-screen w-full overflow-hidden flex items-center justify-center animate-fade-in">
 
         <!-- Immagine di sfondo con animazione Zoom -->
         <div class="absolute inset-0 z-0 overflow-hidden">
             <img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=2070&auto=format&fit=crop"
                 alt="Camera Hotel di Lusso"
-                class="w-full h-full object-cover animate-hero">
+                class="w-full h-full object-cover animate-slow-zoom">
             <!-- Overlay scuro per rendere il testo leggibile -->
             <div class="absolute inset-0 bg-black/40 back-drop-blur-[2px]"></div>
         </div>

@@ -94,6 +94,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->as('admin.')->group(funct
     Route::get('/statistics', [AdminController::class, 'showStatistics']);
     Route::get('/settings', [AdminController::class, 'edit']);
     Route::post('/updateAdmin', [AdminController::class, 'update'])->name('profile.update');
+    Route::get('/newBooking/{roomId}/{checkInDate}', [AdminController::class, 'newBooking'])->name('newBooking');
 });
 
 //make a booking, alcune da mettere nel MIDDLEWARE

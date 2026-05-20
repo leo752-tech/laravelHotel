@@ -11,6 +11,7 @@ class Booking extends Model
     const STATUS_CONFIRMED = 'confirmed';
     const STATUS_CANCELLED = 'cancelled';
     const STATUS_CHECKED_IN = 'checkedIn';
+    const STATUS_CHECKED_OUT = 'checkedOut';
 
     protected $fillable = [
         'userId',

@@ -7,6 +7,7 @@ use App\Models\Booking;
 use App\Services\StatisticsService;
 use Illuminate\Support\Carbon;
 use App\Models\Review;
+use App\Models\SpecialOffer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
@@ -92,5 +93,14 @@ class AdminController extends Controller
         $user->save();
 
         return redirect()->route('admin.dashboard')->with('success', 'Profilo aggiornato con successo!');
+    }
+
+    public function newBooking($roomId, $checkInDate)
+    {
+        
+        $specialOffers = SpecialOffer::all();
+        $room = Room::findOrFail($roomId);
+        $rooms = Room::all();
+        return view('admin.bookings.manualBooking', compact('room', 'rooms', 'checkInDate', 'specialOffers'));
     }
 }

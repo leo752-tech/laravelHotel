@@ -94,8 +94,6 @@
                     <a href="/" class="text-2xl font-light text-white/80 hover:text-white hover:translate-x-2 transition-all">Home</a>
                     <a href="/servizi" class="text-2xl font-light text-white/80 hover:text-white hover:translate-x-2 transition-all">Servizi</a>
                     <a href="/recensioni" class="text-2xl font-light text-white/80 hover:text-white hover:translate-x-2 transition-all">Recensioni</a>
-                    <a href="/specialOffer" class="text-2xl font-light text-yellow-500 hover:text-yellow-400 hover:translate-x-2 transition-all">Offerte Speciali</a>
-
                     @auth
                     @if(Auth::user()->isAdmin)
                     <div class="mt-8 pt-8 border-t border-white/10 flex flex-col gap-6">
