@@ -16,8 +16,8 @@ class UserController extends Controller
     
     public function home()
     {
-        $rooms = Room::all();
-        $services = Service::all();
+        $rooms = Room::take(3)->get();
+        $services = Service::take(3)->get();
         $reviews = Review::all();
         return view('welcome', compact('rooms', 'services', 'reviews'));
     }

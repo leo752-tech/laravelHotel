@@ -49,7 +49,7 @@
     </div>
 
     {{-- 1. SEZIONE TERRITORIO --}}
-    <section class="py-24 bg-white max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <section id="territorio" class="py-24 bg-white max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 
             {{-- Testo: Entra da sinistra --}}
@@ -72,14 +72,14 @@
                 x-intersect:enter="shown = true"
                 x-intersect:leave="shown = false"
                 :class="shown ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'">
-                <img src="{{asset('territorio/territorio1.webp')}}" alt="Paesaggio" class="w-4/5 h-[500px] object-cover rounded-lg shadow-xl ml-auto" />
-                <img src="{{asset('territorio/territorio2.webp')}}" alt="Dettaglio" class="absolute bottom-10 left-0 w-1/2 h-[250px] object-cover rounded-lg shadow-2xl border-4 border-white" />
+                <img src="{{asset('territorio/terri1.png')}}" alt="Paesaggio" class="w-4/5 h-[500px] object-cover rounded-lg shadow-xl ml-auto" />
+                <img src="{{asset('territorio/terri2.png')}}" alt="Dettaglio" class="absolute bottom-10 left-0 w-1/2 h-[250px] object-cover rounded-lg shadow-2xl border-4 border-white" />
             </div>
         </div>
     </section>
 
     {{-- 2. SEZIONE CAMERE --}}
-    <section class="py-24 bg-slate-50 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <section id="camere" class="py-24 bg-slate-50 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden">
         <div class="text-center mb-16 transition-all duration-1000 ease-out"
             x-data="{ shown: false }"
             x-intersect:enter="shown = true"
@@ -134,7 +134,7 @@
     </section>
 
     {{-- SEZIONE SERVIZI --}}
-    <section class="py-24 bg-white max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <section id="servizi" class="py-24 bg-white max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden">
 
         <div class="mb-16 md:w-2/3 transition-all duration-1000 ease-out"
             x-data="{ shown: false }"
@@ -178,10 +178,15 @@
             </div>
             @endforeach
         </div>
+        <div class="text-center mt-12">
+            <a href="{{ route('allServices') }}" class="inline-block px-8 py-3 text-sm font-medium tracking-wider uppercase border border-slate-800 text-slate-800 rounded-full hover:bg-slate-800 hover:text-white transition-all duration-300">
+                Scopri di più
+            </a>
+        </div>
     </section>
 
     {{-- SEZIONE RECENSIONI --}}
-    <section class="py-24 bg-slate-900 text-white relative overflow-hidden">
+    <section id="recensioni" class="py-24 bg-slate-900 text-white relative overflow-hidden">
         <div class="absolute top-10 left-10 text-slate-800/50 text-9xl font-serif select-none pointer-events-none">
             "
         </div>

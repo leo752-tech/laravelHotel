@@ -7,19 +7,48 @@
 
     <div class="navbar max-w-7xl mx-auto px-4">
 
-        {{-- SINISTRA: Burger Menu (Solo Pulsante) --}}
+        {{-- SINISTRA: Burger Menu (Visibile SOLO su Mobile) e Brand (Opzionale/Consigliato) --}}
         <div class="navbar-start">
-            <button @click="isMenuOpen = true" class="btn btn-ghost btn-circle hover:bg-white/20 transition-colors">
+            {{-- Hamburger Button: si nasconde da 'md' in su --}}
+            <button @click="isMenuOpen = true" class="btn btn-ghost btn-circle hover:bg-white/20 transition-colors md:hidden">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </button>
+
+            {{-- Brand Logo visibile su desktop a sinistra per bilanciare il layout --}}
+            <a href="/" class="text-xl font-bold tracking-wider hidden md:block">SuiteDirect</a>
         </div>
 
-        {{-- CENTRO: Vuoto --}}
-        <div class="navbar-center"></div>
+        {{-- CENTRO: Menu di Navigazione Orizzontale (Visibile SOLO su Desktop) --}}
+        <div class="navbar-center hidden md:flex">
+            <ul class="menu menu-horizontal px-1 gap-2">
+                <li>
+                    <a href="/" class="text-sm font-light uppercase tracking-wider text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-all">Home</a>
+                </li>
+                <li>
+                    <a href="#territorio" class="text-sm font-light uppercase tracking-wider text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-all">Territorio</a>
+                </li>
+                <li>
+                    <a href="#camere" class="text-sm font-light uppercase tracking-wider text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-all">Camere</a>
+                </li>
+                <li>
+                    <a href="#servizi" class="text-sm font-light uppercase tracking-wider text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-all">Servizi</a>
+                </li>
+                <li>
+                    <a href="#recensioni" class="text-sm font-light uppercase tracking-wider text-white/80 hover:text-white hover:bg-white/10 rounded-full transition-all">Recensioni</a>
+                </li>
+                @auth
+                @if(Auth::user()->isAdmin)
+                <li>
+                    <a href="/admin/dashboard" class="text-sm font-medium uppercase tracking-wider text-sky-400 hover:text-sky-300 hover:bg-sky-500/10 rounded-full transition-all">Dashboard</a>
+                </li>
+                @endif
+                @endauth
+            </ul>
+        </div>
 
-        {{-- DESTRA: Pulsanti Azione (Invariati) --}}
+        {{-- DESTRA: Pulsanti Azione (Invariati, visibili ovunque) --}}
         <div class="navbar-end gap-3">
             @guest
             <a href="/login" class="btn btn-ghost hover:bg-white/20 text-white border-none">Accedi</a>
@@ -39,7 +68,7 @@
                     <li>
                         <form method="POST" action="/logout" class="p-0 m-0">
                             @csrf
-                            @method('DELETE')
+                            @html('DELETE')
                             <button type="submit" class="w-full text-left px-4 py-2 hover:bg-error/10 text-error rounded-lg">Log Out</button>
                         </form>
                     </li>
@@ -52,7 +81,7 @@
 
     </div>
 
-    {{-- IL MENU LATERALE A TUTTA ALTEZZA (Teleportato sul body) --}}
+    {{-- IL MENU LATERALE A TUTTA ALTEZZA (Rimane attivo come fallback per Mobile) --}}
     <template x-teleport="body">
         <div>
             {{-- Sfondo Scuro Semitrasparente (Backdrop) --}}
@@ -89,11 +118,13 @@
                     </button>
                 </div>
 
-                {{-- Voci del menu --}}
+                {{-- Voci del menu Mobile --}}
                 <nav class="flex-1 px-8 py-10 flex flex-col gap-6">
-                    <a href="/" class="text-2xl font-light text-white/80 hover:text-white hover:translate-x-2 transition-all">Home</a>
-                    <a href="/servizi" class="text-2xl font-light text-white/80 hover:text-white hover:translate-x-2 transition-all">Servizi</a>
-                    <a href="/recensioni" class="text-2xl font-light text-white/80 hover:text-white hover:translate-x-2 transition-all">Recensioni</a>
+                    <a href="/" @click="isMenuOpen = false" class="text-2xl font-light text-white/80 hover:text-white hover:translate-x-2 transition-all">Home</a>
+                    <a href="#territorio" @click="isMenuOpen = false" class="text-2xl font-light text-white/80 hover:text-white hover:translate-x-2 transition-all">Territorio</a>
+                    <a href="#camere" @click="isMenuOpen = false" class="text-2xl font-light text-white/80 hover:text-white hover:translate-x-2 transition-all">Camere</a>
+                    <a href="#servizi" @click="isMenuOpen = false" class="text-2xl font-light text-white/80 hover:text-white hover:translate-x-2 transition-all">Servizi</a>
+                    <a href="#recensioni" @click="isMenuOpen = false" class="text-2xl font-light text-white/80 hover:text-white hover:translate-x-2 transition-all">Recensioni</a>
                     @auth
                     @if(Auth::user()->isAdmin)
                     <div class="mt-8 pt-8 border-t border-white/10 flex flex-col gap-6">
@@ -104,7 +135,7 @@
                     @endauth
                 </nav>
 
-                {{-- Footer del menu (es. contatti rapidi) --}}
+                {{-- Footer del menu --}}
                 <div class="p-8 text-sm text-white/50">
                     <p>+39 02 1234567</p>
                     <p>booking@suitedirect.com</p>

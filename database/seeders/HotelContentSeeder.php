@@ -68,54 +68,80 @@ class HotelContentSeeder extends Seeder
         $user1->isAdmin = true;
         $user1->save();
 
-        // 2. Servizi
-        Service::create([
-            'name' => 'Noleggio e convenzioni attrezzatura',
-            'description' => 'Dimentica le code e lo stress. Prenota i tuoi sci, lo snowboard o le e-bike direttamente in hotel grazie alle nostre partnership esclusive con i migliori noleggi del territorio. Al tuo ritorno, potrai depositare tutto nella nostra Ski Room riscaldata e videosorvegliata.',
-            'price' => 50,
-            'pathImage' => 'service/noleggio.webp'
-        ]);
-        Service::create([
-            'name' => 'Colazione',
-            'description' => 'Comincia la giornata con il profumo dei dolci fatti in casa, torte della tradizione abruzzese, confetture locali, formaggi freschi e salumi del territorio. Una ricca colazione a buffet, dolce e salata, pensata per darti la giusta carica prima di esplorare le piste o i sentieri.',
-            'price' => 5,
-            'pathImage' => 'service/colazione2.jpeg'
-        ]);
-
-        // 3. Camere
-        Room::create([
-            'name' => 'Suite 101',
-            'beds' => 2,
-            'price' => 200,
-            'type' => 'Luxury',
-            'description' => 'Vista mare con balcone panoramico'
-        ]);
-
-        Room::create([
-            'name' => 'Stanza 202',
-            'beds' => 3,
-            'price' => 90,
-            'type' => 'Standard',
-            'description' => 'Affaccio corte interna, molto silenziosa'
-        ]);
-
-        // 4. Offerte
-        SpecialOffer::create([
-            'title' => 'Sconto Estate',
-            'description' => 'Soggiorno di 7 giorni al prezzo di 5',
-            'lenght' => 7,
-            'specialPrice' => 0.28
-        ]);
-
-        //inserimento immagini per camere
-        $images1 = [
-            'room/camera1_1.jpeg',
-            'room/camera1_2.jpeg',
-            'room/camera1_3.jpeg',
-            'room/camera1_4.jpeg'            
+        $services = [
+            [
+                'name' => 'Accoglienza & Flessibilità',
+                'pathImage' => 'services/accoglienza.webp', // Mani che passano una chiave di design / benvenuto
+                'description' => 'Ti accogliamo facendoti sentire a casa fin dal primo momento. Garantiamo la massima flessibilità sugli orari di arrivo, adattandoci alle tue esigenze per un check-in comodo, sicuro e senza stress.',
+                'price' => 0, // Incluso nel soggiorno
+            ],
+            [
+                'name' => 'Colazione Artigianale',
+                'pathImage' => 'services/colazione2.webp', // Dettaglio tazza di caffè e pasticceria chic
+                'description' => 'Il tuo buongiorno inizia con i sapori del territorio: una selezione di prodotti locali, dolci fatti in casa appena sfornati e opzioni personalizzate per ogni esigenza alimentare.',
+                'price' => 0, // Incluso o gestibile come extra
+            ],
+            [
+                'name' => 'Noleggio e convenzioni attrezzatura',
+                'description' => 'Dimentica le code e lo stress. Prenota i tuoi sci, lo snowboard o le e-bike direttamente in hotel grazie alle nostre partnership esclusive con i migliori noleggi del territorio. Al tuo ritorno, potrai depositare tutto nella nostra Ski Room riscaldata e videosorvegliata.',
+                'price' => 50,
+                'pathImage' => 'services/noleggio.webp'
+            ],
+            [
+                'name' => 'Beach Experience & Relax',
+                'pathImage' => 'services/beach.webp', // Spiaggia / lettini al tramonto
+                'description' => 'Il tuo posto al sole senza pensieri. Include l’accesso alla spiaggia attrezzata partner con ombrellone e lettini riservati, teli mare premium gratuiti e la possibilità di prenotare escursioni in barca al tramonto lungo la costa.',
+                'price' => 0,
+            ],
         ];
 
-        foreach($images1 as $image){
+        foreach ($services as $service) {
+            Service::create($service);
+        }
+
+
+        $rooms = [
+            [
+                'name' => 'Stanza Essenza',
+                'beds' => 2,
+                'price' => 9500, // 95.00€
+                'type' => 'Standard',
+                'description' => 'Un ambiente intimo e minimale, perfetto per chi cerca comfort e funzionalità. Arredata con materiali naturali, offre una splendida illuminazione naturale e dettagli di design contemporaneo.',
+            ],
+            [
+                'name' => 'Stanza Orizzonte',
+                'beds' => 2,
+                'price' => 13000, // 130.00€
+                'type' => 'Superior',
+                'description' => 'Spazio e raffinatezza si fondono in questa camera superior. Dotata di un’ampia area relax interna e di una vista privilegiata sul panorama circostante, è pensata per soggiorni rigeneranti.',
+            ],
+            [
+                'name' => 'Dimora Levante Suite',
+                'beds' => 2,
+                'price' => 19000, // 190.00€
+                'type' => 'Suite',
+                'description' => 'La massima espressione della nostra ospitalità. Una suite esclusiva con letto king-size, vasca da bagno di design a vista e un salotto privato dove godersi momenti di assoluta riservatezza.',
+            ],
+            [
+                'name' => 'Stanza Equilibrio',
+                'beds' => 3,
+                'price' => 15500, // 155.00€
+                'type' => 'Triple',
+                'description' => 'Soluzione versatile ideale per piccoli gruppi o famiglie. Gli spazi sono ottimizzati per garantire a ciascun ospite la massima privacy, senza rinunciare allo stile sobrio ed elegante della struttura.',
+            ],
+        ];
+
+        foreach ($rooms as $room) {
+            Room::create($room);
+        }
+
+        $images1 = [
+            'rooms/standard1.webp',
+            'rooms/standard2.webp',
+            'rooms/standard3.webp',
+        ];
+
+        foreach ($images1 as $image) {
             Image::create([
                 'roomId' => 1,
                 'pathImage' => $image
@@ -123,10 +149,9 @@ class HotelContentSeeder extends Seeder
         }
 
         $images2 = [
-            'room/camera2_1.jpeg',
-            'room/camera2_2.jpeg',
-            'room/camera2_3.jpeg',
-            'room/camera2_4.jpeg'
+            'rooms/orizzonte1.webp',
+            'rooms/orizzonte2.webp',
+            'rooms/orizzonte3.webp',
         ];
 
         foreach ($images2 as $image) {
@@ -136,7 +161,40 @@ class HotelContentSeeder extends Seeder
             ]);
         }
 
-        
+        $images3 = [
+            'rooms/suite.webp',
+            'rooms/suite2.webp',
+            'rooms/suite3.webp',
+        ];
+
+        foreach ($images3 as $image) {
+            Image::create([
+                'roomId' => 3,
+                'pathImage' => $image
+            ]);
+        }
+
+        //inserimento immagini per camere
+        $images4 = [
+            'rooms/equilibrio1.webp',
+            'rooms/equilibrio2.webp',
+            'rooms/equilibrio3.webp',
+        ];
+
+        foreach($images4 as $image){
+            Image::create([
+                'roomId' => 4,
+                'pathImage' => $image
+            ]);
+        }
+
+        // 4. Offerte
+        SpecialOffer::create([
+            'title' => 'Sconto Estate',
+            'description' => 'Soggiorno di 7 giorni al prezzo di 5',
+            'lenght' => 7,
+            'specialPrice' => 0.28
+        ]);
 
         // --- RECORD 1: Prenotazione passata con Recensione ---
         $booking1 = Booking::create([
@@ -170,7 +228,7 @@ class HotelContentSeeder extends Seeder
 
         Review::create([
             'title'       => 'Buona esperienza',
-            'description' => 'Tutto bene, colazione ottima. Unica pecca il Wi-Fi un po\' lento in camera.',
+            'description' => 'Tutto bene, colazione ottima. Personale molto preparato e accogliente.',
             'rating'      => 4,
             'userId'      => 2,
             'bookingId'   => $booking2->id,

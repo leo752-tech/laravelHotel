@@ -41,6 +41,7 @@ Route::get('/camere', [RoomController::class, 'indexUser']);
 Route::get('/detailRoomGuest/{id}', [RoomController::class, 'showDetailGuest'])->name('detailRoom');
 Route::get('/territorio', [UserController::class, 'showTerritory'])->name('territory');
 Route::get('/allRooms', [RoomController::class, 'showAllRooms'])->name('allRooms');
+Route::get('/allServices', [ServiceController::class, 'showAllServices'])->name('allServices');
 
 
 
