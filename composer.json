@@ -85,6 +85,8 @@
         "dompdf/dompdf": "*",
         "laravel/cashier": "^15.3",
         "laravel/tinker": "*",
+        "livewire/livewire": "*",
+        "livewire/volt": "*",
         "symfony/console": "^7.0",
         "symfony/string": "^7.0",
         "symfony/yaml": "^7.0"

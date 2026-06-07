@@ -19,7 +19,99 @@
     border: none !important;
     padding: 0 !important;
 }
+/* Colore del giorno di Check-in e Check-out selezionati */
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange,
+.flatpickr-day.selected:hover,
+.flatpickr-day.startRange:hover,
+.flatpickr-day.endRange:hover {
+    background: #a88a64 !important;
+    border-color: #a88a64 !important;
+    color: white !important;
+}
 
+/* Colore dell'intervallo di date (le notti centrali del soggiorno) */
+.flatpickr-day.inRange,
+.flatpickr-day.prevMonthDay.inRange,
+.flatpickr-day.nextMonthDay.inRange,
+.flatpickr-day.today.inRange,
+.flatpickr-day.prevMonthDay.today.inRange {
+    background: #a88a64 !important;
+    border-color: #f3ece4 !important;
+    color: #5c4d3c !important;
+    border-radius: 0 !important;
+}
+/* Se vuoi che lo spazio di giunzione tra il 12 e il 13 sia colorato del beige chiaro delle notti intermedie */
+.flatpickr-day.startRange {
+    box-shadow: 5px 0 0 #f3ece4 !important;
+    /* Estende il beige chiaro verso destra */
+}
+
+.flatpickr-day.endRange {
+    box-shadow: -5px 0 0 #f3ece4 !important;
+    /* Estende il beige chiaro verso sinistra */
+}
+/* --- RESET E MONTAGGIO HEADER FLATPICKR (Mese e Anno) --- */
+.flatpickr-calendar .flatpickr-months {
+    background-color: #a88a64 !important;
+    /* Colore marrone/bronzo */
+    border-radius: 8px 8px 0 0;
+}
+
+/* Forziamo il contenitore dei mesi (ce ne sono 2 affiancati) ad avere lo sfondo uniforme */
+.flatpickr-calendar .flatpickr-months .flatpickr-month {
+    background-color: #a88a64 !important;
+    color: #ffffff !important;
+    fill: #ffffff !important;
+}
+
+/* Colore del testo del mese e dell'anno corrente */
+.flatpickr-calendar .flatpickr-months .flatpickr-current-month,
+.flatpickr-calendar .flatpickr-months .flatpickr-current-month .flatpickr-monthDropdown-months,
+.flatpickr-calendar .flatpickr-months .flatpickr-current-month input.cur-year {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+/* Colore delle frecce di navigazione avanti/indietro */
+.flatpickr-calendar .flatpickr-months .flatpickr-prev-month,
+.flatpickr-calendar .flatpickr-months .flatpickr-next-month {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+    background: transparent !important;
+}
+
+.flatpickr-calendar .flatpickr-months .flatpickr-prev-month svg,
+.flatpickr-calendar .flatpickr-months .flatpickr-next-month svg {
+    fill: #ffffff !important;
+}
+
+
+/* --- CORREZIONE COMPLETA DELLA BARRA DEI GIORNI (Lun, Mar...) --- */
+/* Nel tema material_blue, i giorni sono dentro .flatpickr-weekdays. Diamo lo sfondo marrone totale */
+.flatpickr-calendar .flatpickr-weekdays {
+    background-color: #a88a64 !important;
+    /* Mantiene lo stesso sfondo dell'header per un blocco unico */
+    border-bottom: 1px solid #967754;
+    /* Opzionale: una linea sottile per staccare dalla griglia numeri */
+}
+
+/* Ogni singolo blocco del mese ha i suoi giorni della settimana (.flatpickr-weekdaycontainer) */
+.flatpickr-calendar .flatpickr-weekdaycontainer {
+    background-color: #a88a64 !important;
+    /* Sovrascrive l'azzurro residuo che vedi nella foto */
+}
+
+/* Stile del testo dei singoli giorni (Lun, Mar, Mer...) */
+.flatpickr-calendar span.flatpickr-weekday {
+    background-color: #a88a64 !important;
+    /* Elimina qualsiasi striscia azzurra rimasta sotto */
+    color: #ffffff !important;
+    /* Testo bianco */
+    font-weight: 600 !important;
+}
 
 /* Definiamo l'animazione Ken Burns (Zoom lento) */
 @keyframes kenburns {

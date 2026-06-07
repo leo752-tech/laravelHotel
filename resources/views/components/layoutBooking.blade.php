@@ -22,7 +22,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body>
+<body class="flex flex-col min-h-screen">
     <x-navBooking />
 
     <div class="max-w-4xl mx-auto"> {{-- Container opzionale per centraggio --}}
@@ -55,7 +55,7 @@
         </div>
         @endif
     </div>
-    <main>
+    <main class="flex-grow">
         {{ $slot }}
     </main>
 

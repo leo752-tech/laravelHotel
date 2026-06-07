@@ -19,6 +19,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
 
+use function Pest\Laravel\get;
+
 class BookingController extends Controller
 {
     use AuthorizesRequests;
@@ -65,7 +67,8 @@ class BookingController extends Controller
 
     public function showCalendar(){
         session()->forget(['specialOfferId', 'specialOfferLenght']);
-        return view('bookings.calendar');
+        $rooms = Room::with('images')->get();
+        return view('bookings.calendar', compact('rooms'));
     }
 
     public function showCalendarOffer($id)
@@ -150,8 +153,8 @@ class BookingController extends Controller
         session(['availableRooms' => $availableRooms]);
         return view('bookings.calendar', [
             'rooms' => $availableRooms,
-            'checkIn' => $checkIn->format('Y-m-d'),
-            'checkOut' => $checkOut->format('Y-m-d'),
+            'checkIn' => $checkIn->format('d-m-Y'),
+            'checkOut' => $checkOut->format('d-m-Y'),
             'nights' => $nights,
             'discount' => $discount ?? null,
             'guests' => $request->beds_required
