@@ -1,6 +1,4 @@
-@props([
-'title' => 'SuiteDirect'
-])
+@props(['title' => 'SuiteDirect', 'transparent' => true])
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="scroll-smooth">
@@ -12,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.min.css">
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/material_blue.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+
     <title>{{ $title }}</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -21,35 +19,59 @@
 <body>
     <x-nav />
 
-    <div class="max-w-4xl mx-auto"> {{-- Container opzionale per centraggio --}}
+    <div class="max-w-4xl mx-auto px-4 sm:px-0 ">
+
+        {{-- 1. MESSAGGIO DI SUCCESSO (Elegante e discreto) --}}
         @if(session('success'))
-        <div class="alert alert-success shadow-lg mb-6 mt-4">
-            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span>{{ session('success') }}</span>
+        <div class="bg-white border-l-4 border-[#354F42] shadow-sm rounded-r-xl p-4 mb-6 flex items-start gap-3.5 backend-alert">
+            <div class="text-[#354F42] mt-0.5 shrink-0">
+                <i class="fa-solid fa-circle-check text-lg"></i>
+            </div>
+            <div class="flex-1">
+                <p class="text-sm font-medium text-slate-800 leading-relaxed">
+                    {{ session('success') }}
+                </p>
+            </div>
         </div>
         @endif
 
+        {{-- 2. ERRORE DI SESSIONE / GENERICO --}}
         @if(session('error'))
-        <div class="alert alert-error shadow-lg mb-6 bg-red-100 text-red-800 border-red-200">
-            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <span>{{ session('error') }}</span>
+        <div class="bg-[#FFF8F8] border-l-4 border-amber-600 shadow-sm rounded-r-xl p-4 mb-6 flex items-start gap-3.5 backend-alert">
+            <div class="text-amber-600 mt-0.5 shrink-0">
+                <i class="fa-solid fa-circle-exclamation text-lg"></i>
+            </div>
+            <div class="flex-1">
+                <p class="text-sm font-medium text-slate-800 leading-relaxed">
+                    {{ session('error') }}
+                </p>
+            </div>
         </div>
         @endif
 
-        {{-- Errori di validazione (quelli automatici di Laravel) --}}
+        {{-- 3. ERRORI DI VALIDAZIONE (Formato Lista Pulita) --}}
         @if ($errors->any())
-        <div class="alert alert-error shadow-lg mb-6 bg-red-100 text-red-800 border-red-200">
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+        <div class="bg-[#FFF8F8] border-l-4 border-red-500 shadow-sm rounded-r-xl p-4 mb-6 flex items-start gap-3.5 backend-alert">
+            <div class="text-red-500 mt-0.5 shrink-0">
+                <i class="fa-solid fa-circle-xmark text-lg"></i>
+            </div>
+            <div class="flex-1">
+                <h4 class="text-sm font-semibold text-slate-900 mb-1.5">Si è verificato un inconveniente</h4>
+                <ul class="space-y-1.5 text-sm text-slate-600 list-none pl-0">
+                    @foreach ($errors->all() as $error)
+                    <li class="flex items-center gap-2">
+                        <span class="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0"></span>
+                        <span>
+                            {{-- Piccolo trick temporaneo per tradurre al volo l'errore dello screenshot --}}
+                            {{ $error == 'The date range field is required.' ? 'È necessario selezionare le date del soggiorno nel calendario.' : $error }}
+                        </span>
+                    </li>
+                    @endforeach
+                </ul>
+            </div>
         </div>
         @endif
+
     </div>
     <main>
         {{ $slot }}

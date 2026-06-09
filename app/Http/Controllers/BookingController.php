@@ -211,14 +211,19 @@ class BookingController extends Controller
 
         return view('bookings.newCheckOut', [
             'clientSecret' => $paymentIntent->client_secret,
-            'totalPrice' => $totalPrice,
+            'totalPrice' => $totalPrice/100,
             'room' => $room,
-            'checkIn' => $checkIn->format('Y-m-d'),
-            'checkOut' => $checkOut->format('Y-m-d'),
+            'checkIn' => $checkIn->format('d-m-Y'),
+            'checkOut' => $checkOut->format('d-m-Y'),
             'nights' => $nights,
             'services' => $services,
             'guests' => $guests
         ]);
+    }
+
+    public function checkoutDemo()
+    {
+        return view('bookings.thank');
     }
     public function checkout(Request $request)
     {

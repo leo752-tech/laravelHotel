@@ -7,6 +7,7 @@
     "license": "MIT",
     "require-dev": {
         "fakerphp/faker": "^1.23",
+        "laravel-lang/lang": "*",
         "laravel/boost": "^2.0",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.24",

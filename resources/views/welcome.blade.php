@@ -72,8 +72,8 @@
                 x-intersect:enter="shown = true"
                 x-intersect:leave="shown = false"
                 :class="shown ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'">
-                <img src="{{asset('territorio/terri1.png')}}" alt="Paesaggio" class="w-4/5 h-[500px] object-cover rounded-lg shadow-xl ml-auto" />
-                <img src="{{asset('territorio/terri2.png')}}" alt="Dettaglio" class="absolute bottom-10 left-0 w-1/2 h-[250px] object-cover rounded-lg shadow-2xl border-4 border-white" />
+                <img src="{{asset('territorio/terri1.webp')}}" alt="Paesaggio" class="w-4/5 h-[500px] object-cover rounded-lg shadow-xl ml-auto" />
+                <img src="{{asset('territorio/terri2.webp')}}" alt="Dettaglio" class="absolute bottom-10 left-0 w-1/2 h-[250px] object-cover rounded-lg shadow-2xl border-4 border-white" />
             </div>
         </div>
     </section>

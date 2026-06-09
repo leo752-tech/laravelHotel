@@ -104,4 +104,11 @@ Route::post('/search', [BookingController::class, 'search'])->name('search');
 Route::get('/summary/{id}', [BookingController::class, 'summary'])->name('summary');
 Route::get('/payment', [/* da scrivere*/]);
 
+// IL PARACADUTE: Se arriva una richiesta GET qui, la reindirizziamo alla home con l'errore
+Route::get('/search', function () {
+    return redirect('/')->withErrors(['date_range' => 'La sessione di ricerca è scaduta o le date non sono valide. Seleziona nuovamente le date.']);
+});
+
 Route::get('/calendar/{id}', [BookingController::class, 'showCalendarOffer'])->name('calendarOffer');
+
+Route::post('/checkoutDemo', [BookingController::class, 'checkoutDemo'])->name('checkoutDemo');

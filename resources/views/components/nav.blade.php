@@ -1,11 +1,12 @@
 <div x-data="{ scrollPos: 0, maxScroll: 800, isMenuOpen: false }"
-    @scroll.window="scrollPos = window.scrollY"
-    @keydown.escape.window="isMenuOpen = false"
-    class="fixed top-0 w-full z-50 text-white transition-[padding,box-shadow,backdrop-filter] duration-300 ease-in-out"
-    :class="scrollPos > 10 ? 'py-2 shadow-lg backdrop-blur-md' : 'py-4'"
-    :style="`background-color: rgba(15, 23, 42, ${Math.min(scrollPos / maxScroll, 0.95)});`">
+        @scroll.window="scrollPos = window.scrollY"
+        @keydown.escape.window="isMenuOpen = false"
+        class="fixed top-0 w-full z-50 text-white transition-[padding,box-shadow,backdrop-filter] duration-300 ease-in-out"
+        :class="scrollPos > 10 ? 'py-2 shadow-lg backdrop-blur-md' : 'py-4'"
+        :style="`background-color: rgba(15, 23, 42, ${Math.min(scrollPos / maxScroll, 0.95)});`">
 
-    <div class="navbar max-w-7xl mx-auto px-4">
+        <div class="navbar max-w-7xl mx-auto px-4">
+        {{-- Il resto del tuo codice interno della navbar rimane identico --}}
 
         {{-- SINISTRA: Burger Menu (Visibile SOLO su Mobile) e Brand (Opzionale/Consigliato) --}}
         <div class="navbar-start">

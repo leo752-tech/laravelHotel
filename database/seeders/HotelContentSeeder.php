@@ -29,7 +29,7 @@ class HotelContentSeeder extends Seeder
 
         $guest1 = Guest::create([
             'firstName' => 'Leopoldo',
-            'lastName' => 'Silvestri',
+            'lastName' => 'Casale',
             'birthDate' => '2001-05-07',
             'birthPlace' => 'Sulmona'
         ]);
@@ -56,7 +56,7 @@ class HotelContentSeeder extends Seeder
 
         $user1 = User::create([
             'firstName' => 'Leopoldo',
-            'lastName' => 'Silvestri',
+            'lastName' => 'Casale',
             'birthDate' => '2001-05-07',
             'birthPlace' => 'Sulmona',
             'email' => 'leopoldosilvestri@gmail.com',
@@ -117,7 +117,7 @@ class HotelContentSeeder extends Seeder
             ],
             [
                 'name' => 'Dimora Levante Suite',
-                'beds' => 2,
+                'beds' => 4,
                 'price' => 19000, // 190.00€
                 'type' => 'Suite',
                 'description' => 'La massima espressione della nostra ospitalità. Una suite esclusiva con letto king-size, vasca da bagno di design a vista e un salotto privato dove godersi momenti di assoluta riservatezza.',
@@ -136,7 +136,7 @@ class HotelContentSeeder extends Seeder
         }
 
         $images1 = [
-            'rooms/standard1.webp',
+            'rooms/standardC.webp',
             'rooms/standard2.webp',
             'rooms/standard3.webp',
         ];
@@ -149,7 +149,7 @@ class HotelContentSeeder extends Seeder
         }
 
         $images2 = [
-            'rooms/orizzonte1.webp',
+            'rooms/orizzonteC.webp',
             'rooms/orizzonte2.webp',
             'rooms/orizzonte3.webp',
         ];
@@ -162,7 +162,7 @@ class HotelContentSeeder extends Seeder
         }
 
         $images3 = [
-            'rooms/suite.webp',
+            'rooms/suiteC.webp',
             'rooms/suite2.webp',
             'rooms/suite3.webp',
         ];
@@ -176,7 +176,7 @@ class HotelContentSeeder extends Seeder
 
         //inserimento immagini per camere
         $images4 = [
-            'rooms/equilibrio1.webp',
+            'rooms/equilibrioC.webp',
             'rooms/equilibrio2.webp',
             'rooms/equilibrio3.webp',
         ];

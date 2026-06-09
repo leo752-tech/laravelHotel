@@ -7,7 +7,6 @@
             box-shadow: none !important;
             border: none !important;
             padding: 0 !important;
-            /* Rimuove il padding che causava il restringimento */
             margin: 0 !important;
             background: transparent !important;
         }
@@ -21,7 +20,6 @@
             max-width: 100% !important;
             min-width: 100% !important;
             border: none !important;
-            /* Fondamentale: rimuove i bordi laterali disallineati */
             box-sizing: border-box !important;
         }
 
@@ -46,7 +44,6 @@
             margin: 2px 0 !important;
             box-sizing: border-box !important;
             border-radius: 8px !important;
-            /* Arrotondamento più elegante per i giorni */
         }
 
         /* 4. INTESTAZIONE MESE E FRECCE (Header Blu) */
@@ -86,7 +83,6 @@
         .flatpickr-current-month .flatpickr-monthDropdown-months .flatpickr-monthDropdown-month:checked,
         .flatpickr-current-month .flatpickr-monthDropdown-months:focus {
             background-color: #8c7251 !important;
-            /* Un marrone leggermente più scuro per far capire dove ci si trova */
             color: #ffffff !important;
         }
 
@@ -103,12 +99,11 @@
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
-            /* Centra le frecce verticalmente nell'header blu */
             padding: 0 15px !important;
             z-index: 10 !important;
         }
 
-        /* 5. COLORI PERSONALIZZATI (Check-in, Check-out e range) */
+        /* 5. COLORI PERSONALIZZATI */
         .flatpickr-day.selected,
         .flatpickr-day.startRange,
         .flatpickr-day.endRange,
@@ -128,7 +123,6 @@
         .flatpickr-day.startRange.nextMonthDay,
         .flatpickr-day.endRange.nextMonthDay {
             background: #354F42 !important;
-            /* Cerchio verde sui giorni */
             border-color: #354F42 !important;
             color: #fff !important;
         }
@@ -140,80 +134,67 @@
         }
 
         /* 6. RENDE L'ANNO COMPLETAMENTE STATICO */
-
-        /* Nasconde le freccette su/giù vicino all'anno */
         .flatpickr-current-month .numInputWrapper span.arrowUp,
         .flatpickr-current-month .numInputWrapper span.arrowDown {
             display: none !important;
         }
 
-        /* Rimuove lo stile da "campo di testo" e disabilita il click/scrittura */
         .flatpickr-current-month input.cur-year {
             pointer-events: none !important;
-            /* Disabilita qualsiasi interazione */
             background: transparent !important;
-            /* Toglie sfondi o hover del browser */
             -webkit-appearance: none !important;
             -moz-appearance: textfield !important;
             border: none !important;
             box-shadow: none !important;
             font-weight: bold !important;
-            /* Opzionale: lo rende spesso come il mese */
         }
 
-        /* Disabilita il contenitore dell'anno per sicurezza */
         .flatpickr-current-month .numInputWrapper {
             pointer-events: none !important;
         }
     </style>
-    {{-- Sfondo che richiama il colore caldo/sabbia dell'immagine --}}
-    <div class="bg-[#D3C1B3] min-h-screen py-8">
+
+    <div class="bg-[#D3C1B3] min-h-screen py-6 sm:py-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            <div class="flex flex-col lg:flex-row gap-6">
+            <div class="flex flex-col lg:flex-row gap-6 lg:gap-8">
 
-                {{-- COLONNA SINISTRA: Modulo di Ricerca (Stile Immagine) --}}
                 {{-- COLONNA SINISTRA: Modulo di Ricerca --}}
-                <aside class="w-full lg:w-1/3 xl:w-1/4 sticky top-6 h-fit z-10">
-
-                    <form action="{{ route('search') ?? '#' }}" method="POST" class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
+                {{-- FIX MOBILE: Rimosso 'sticky top-6' generico, aggiunto 'static lg:sticky lg:top-6' --}}
+                <aside class="w-full lg:w-1/3 xl:w-1/4 static lg:sticky lg:top-6 h-fit z-10 mb-4 lg:mb-0">
+                    <form action="{{ route('search') ?? '#' }}" method="POST" onsubmit="if(!document.getElementById('date-range-input').value) { event.preventDefault(); alert('Per favore, seleziona le date del soggiorno prima di cercare.'); return false; }"
+                        class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-100">
                         @csrf
 
-                        {{-- Intestazione Form --}}
-                        <div class="bg-[#f8f9fa] p-5 border-b border-gray-100 text-center">
+                        <div class="bg-[#f8f9fa] p-4 sm:p-5 border-b border-gray-100 text-center">
                             <h2 class="text-lg font-semibold text-gray-800">Cerca disponibilità</h2>
                         </div>
 
-                        {{-- Riepilogo Date e Notti (Design pulito e arioso) --}}
-                        <div class="grid grid-cols-3 gap-0 text-center px-4 py-6">
+                        <div class="grid grid-cols-3 gap-0 text-center px-2 sm:px-4 py-4 sm:py-6">
                             <div class="flex flex-col items-center justify-center">
                                 <span class="text-[10px] uppercase tracking-wide text-gray-400 font-semibold mb-1">Check-in</span>
-                                <span id="display-checkin" class="font-medium text-[#2c3e50] text-sm bg-gray-50 px-2 py-1 rounded w-full border border-transparent">Seleziona</span>
+                                <span id="display-checkin" class="font-medium text-[#2c3e50] text-xs sm:text-sm bg-gray-50 px-1 sm:px-2 py-1 rounded w-full border border-transparent truncate">Seleziona</span>
                             </div>
 
-                            <div class="flex flex-col items-center justify-center px-2">
+                            <div class="flex flex-col items-center justify-center px-1 sm:px-2">
                                 <span class="text-[10px] uppercase tracking-wide text-gray-400 font-semibold mb-1">Notti</span>
-                                <span class="bg-[#e9ecef] text-[#495057] text-xs font-bold px-3 py-1 rounded-full">
+                                <span class="bg-[#e9ecef] text-[#495057] text-xs font-bold px-2 sm:px-3 py-1 rounded-full">
                                     <span id="display-nights">0</span>
                                 </span>
                             </div>
 
                             <div class="flex flex-col items-center justify-center">
                                 <span class="text-[10px] uppercase tracking-wide text-gray-400 font-semibold mb-1">Check-out</span>
-                                <span id="display-checkout" class="font-medium text-[#2c3e50] text-sm bg-gray-50 px-2 py-1 rounded w-full border border-transparent">Seleziona</span>
+                                <span id="display-checkout" class="font-medium text-[#2c3e50] text-xs sm:text-sm bg-gray-50 px-1 sm:px-2 py-1 rounded w-full border border-transparent truncate">Seleziona</span>
                             </div>
                         </div>
 
-                        {{-- Calendario Inline --}}
                         <div class="px-2 pb-4 border-b border-gray-100">
-                            <input type="hidden" name="date_range" id="date-range-input">
-                            {{-- Rimosso flex e justify-center perché ora il calendario è forzato al 100% del suo elemento padre --}}
+                            <input type="hidden" name="date_range" id="date-range-input" required>
                             <div id="inline-calendar-container" class="w-full"></div>
                         </div>
 
-                        {{-- Sezione Opzioni Ospiti (Utilizzo di Alpine.js) --}}
-                        <div class="p-6 bg-white" x-data="{ rooms: 1, adults: 2, children: 0 }">
-
+                        <div class="p-4 sm:p-6 bg-white" x-data="{ rooms: 1, adults: 2, children: 0 }">
                             <input type="hidden" name="beds_required" :value="Number(adults) + Number(children)">
 
                             <div class="flex justify-between items-center mb-4">
@@ -225,19 +206,18 @@
                                 </h3>
                             </div>
 
-                            {{-- Select Adulti e Bambini (Stile minimal) --}}
-                            <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="grid grid-cols-2 gap-3 sm:gap-4 mb-6">
                                 <div class="relative">
                                     <label class="block text-xs font-medium text-gray-500 mb-1">Adulti</label>
                                     <div class="relative">
-                                        <select x-model="adults" class="block w-full pl-3 pr-10 py-2.5 text-sm border-gray-200 focus:outline-none focus:ring-0 focus:border-[#3b82f6] sm:text-sm rounded-lg bg-gray-50 text-gray-700 appearance-none">
+                                        <select x-model="adults" class="block w-full pl-3 pr-8 py-2.5 text-sm border-gray-200 focus:outline-none focus:ring-0 focus:border-[#3b82f6] rounded-lg bg-gray-50 text-gray-700 appearance-none">
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
                                             <option value="4">4</option>
                                         </select>
                                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
-                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                             </svg>
                                         </div>
@@ -247,14 +227,14 @@
                                 <div class="relative">
                                     <label class="block text-xs font-medium text-gray-500 mb-1">Bambini</label>
                                     <div class="relative">
-                                        <select x-model="children" class="block w-full pl-3 pr-10 py-2.5 text-sm border-gray-200 focus:outline-none focus:ring-0 focus:border-[#3b82f6] sm:text-sm rounded-lg bg-gray-50 text-gray-700 appearance-none">
+                                        <select x-model="children" class="block w-full pl-3 pr-8 py-2.5 text-sm border-gray-200 focus:outline-none focus:ring-0 focus:border-[#3b82f6] rounded-lg bg-gray-50 text-gray-700 appearance-none">
                                             <option value="0">0</option>
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
                                         </select>
                                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
-                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                                             </svg>
                                         </div>
@@ -262,8 +242,8 @@
                                 </div>
                             </div>
 
-                            {{-- Pulsante Submit --}}
-                            <button type="submit" class="w-full bg-[#354F42] text-white font-medium text-sm py-3.5 px-4 rounded-lg shadow-sm hover:bg-[#263C32] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#354F42]"> CERCA DISPONIBILITÀ
+                            <button type="submit" class="w-full bg-[#354F42] text-white font-medium text-sm py-3.5 px-4 rounded-lg shadow-sm hover:bg-[#263C32] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#354F42]">
+                                CERCA DISPONIBILITÀ
                             </button>
 
                             <p class="text-center text-xs text-gray-400 mt-3">
@@ -273,45 +253,33 @@
                     </form>
                 </aside>
 
-
-                {{-- COLONNA DESTRA: Lista Camere (Invariata rispetto a prima, la accorcio per comodità visiva) --}}
-
+                {{-- COLONNA DESTRA: Lista Camere --}}
                 <div class="w-full lg:w-2/3 xl:w-3/4 space-y-6">
 
-                    {{-- 1. HEADER DINAMICO: Vetrina Iniziale VS Risultati di Ricerca --}}
                     @if(isset($checkIn) && isset($checkOut))
-                    {{-- L'utente HA cercato delle date --}}
-                    <div class="mb-6 flex flex-col sm:flex-row justify-between items-center bg-white p-4 rounded shadow-sm border-l-4 border-[#354F42]">
+                    <div class="mb-4 sm:mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-4 rounded shadow-sm border-l-4 border-[#354F42] gap-3 sm:gap-0">
                         <div>
-                            <h2 class="text-lg font-semibold text-gray-800">
-                                Risultati per il tuo soggiorno
-                            </h2>
+                            <h2 class="text-lg font-semibold text-gray-800">Risultati per il tuo soggiorno</h2>
                             <p class="text-sm text-gray-500 mt-1">
                                 <span class="font-medium text-gray-700">{{ $checkIn }}</span> - <span class="font-medium text-gray-700">{{ $checkOut }}</span>
-                                &bull; Notti {{$nights ?? 0}} &bull; Ospiti {{$guests ?? 2}}
+                                <span class="block sm:inline sm:ml-1">&bull; Notti {{$nights ?? 0}} &bull; Ospiti {{$guests ?? 2}}</span>
                             </p>
                         </div>
-                        <div class="mt-3 sm:mt-0">
-                            <span class="text-xs bg-[#E8ECEA] text-[#354F42] px-3 py-1 rounded-full font-medium">
+                        <div>
+                            <span class="text-xs bg-[#E8ECEA] text-[#354F42] px-3 py-1.5 rounded-full font-medium inline-block">
                                 {{$rooms->count()}} camere disponibili
                             </span>
                         </div>
                     </div>
                     @else
-                    {{-- L'utente NON HA cercato (Vetrina Iniziale) --}}
-                    <div class="mb-6 flex flex-col sm:flex-row justify-between items-center bg-white p-5 rounded shadow-sm border-l-4 border-[#D3C1B3]">
+                    <div class="mb-4 sm:mb-6 flex flex-col sm:flex-row justify-between items-center bg-white p-4 sm:p-5 rounded shadow-sm border-l-4 border-[#D3C1B3]">
                         <div>
-                            <h2 class="text-xl font-semibold text-gray-800">
-                                Esplora le nostre sistemazioni
-                            </h2>
-                            <p class="text-sm text-gray-500 mt-1">
-                                Seleziona le date nel calendario a sinistra per visualizzare disponibilità e tariffe esatte.
-                            </p>
+                            <h2 class="text-lg sm:text-xl font-semibold text-gray-800">Esplora le nostre sistemazioni</h2>
+                            <p class="text-sm text-gray-500 mt-1">Seleziona le date nel calendario per visualizzare disponibilità e tariffe esatte.</p>
                         </div>
                     </div>
                     @endif
 
-                    {{-- 2. LISTA CAMERE (Gira sempre, sia come vetrina che come risultati) --}}
                     @forelse($rooms as $room)
                     <div x-data="{ 
                                 openRates: false,
@@ -325,54 +293,70 @@
                                     @endforelse
                                 ] 
                             }" class="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-                        {{-- Parte Superiore della Card --}}
+
                         <div class="flex flex-col md:flex-row">
-
-                            {{-- Galleria Immagini (Invariata) --}}
-                            <div class="w-full md:w-1/3 relative bg-gray-200 h-64 md:h-auto">
-
+                            {{-- Galleria Immagini --}}
+                            <div class="w-full md:w-1/3 relative bg-gray-200 h-56 sm:h-64 md:h-auto">
                                 <img :src="slides[activeSlide]" alt="{{ $room->name }}" @click="isModalOpen = true" class="absolute inset-0 w-full h-full object-cover cursor-pointer hover:opacity-95 transition-opacity" />
 
                                 <template x-if="slides.length > 1">
                                     <div>
-                                        <button @click.stop="activeSlide = activeSlide === 0 ? slides.length - 1 : activeSlide - 1" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/70 transition">
-                                            <i class="fa-solid fa-chevron-left"></i>
-                                        </button>
-                                        <button @click.stop="activeSlide = activeSlide === slides.length - 1 ? 0 : activeSlide + 1" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/70 transition">
-                                            <i class="fa-solid fa-chevron-right"></i>
-                                        </button>
+                                        <button @click.stop="activeSlide = activeSlide === 0 ? slides.length - 1 : activeSlide - 1" class="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/70 transition"><i class="fa-solid fa-chevron-left"></i></button>
+                                        <button @click.stop="activeSlide = activeSlide === slides.length - 1 ? 0 : activeSlide + 1" class="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-black/70 transition"><i class="fa-solid fa-chevron-right"></i></button>
                                     </div>
                                 </template>
 
-                                
-
-                                {{-- Modale Pop-up (Invariata) --}}
+                                {{-- FIX MOBILE: Altezza ridotta su mobile (min-h-[30vh]) per mostrare il contenuto testuale sottostante senza sforzo --}}
+                                {{-- Modale Pop-up --}}
                                 <template x-teleport="body">
-                                    <div x-show="isModalOpen" style="display: none;" @keydown.escape.window="isModalOpen = false" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 sm:p-6" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
-                                        <div @click.away="isModalOpen = false" class="bg-white rounded-xl shadow-2xl w-full max-w-6xl h-auto max-h-[90vh] flex flex-col md:flex-row overflow-hidden relative" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100">
-                                            <button @click="isModalOpen = false" class="absolute top-4 right-4 z-20 bg-white/80 hover:bg-white text-gray-800 rounded-full w-10 h-10 flex items-center justify-center transition shadow-md">
+                                    <div x-show="isModalOpen" style="display: none;" @keydown.escape.window="isModalOpen = false" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-0 sm:p-6" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0">
+
+                                        {{-- FIX MOBILE: Altezza fissa al 95% dello schermo (h-[95vh]), così l'immagine e il testo si spartiscono lo spazio in modo esatto --}}
+                                        <div @click.away="isModalOpen = false" class="bg-white rounded-none sm:rounded-xl shadow-2xl w-full max-w-6xl h-[100vh] sm:h-auto sm:max-h-[90vh] flex flex-col md:flex-row overflow-hidden relative" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100">
+
+                                            {{-- Pulsante Chiudi --}}
+                                            <button @click="isModalOpen = false" class="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 bg-white/90 hover:bg-white text-gray-800 rounded-full w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center transition shadow-lg">
                                                 <i class="fa-solid fa-xmark text-lg"></i>
                                             </button>
-                                            <div class="w-full md:w-7/12 relative min-h-[40vh] md:min-h-[600px] bg-gray-100">
+
+                                            {{-- 1. CONTENITORE IMMAGINE: Ora occupa molta più altezza (55vh) su mobile --}}
+                                            <div class="w-full md:w-7/12 relative h-[55vh] md:h-auto md:min-h-[600px] bg-gray-200 shrink-0">
+                                                {{-- FIX: object-cover per far riempire tutto lo spazio alla foto senza schiacciarla --}}
                                                 <img :src="slides[activeSlide]" alt="{{ $room->name }}" class="absolute inset-0 w-full h-full object-cover" />
+
                                                 <template x-if="slides.length > 1">
                                                     <div>
-                                                        <button @click.stop="activeSlide = activeSlide === 0 ? slides.length - 1 : activeSlide - 1" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 text-gray-800 w-12 h-12 rounded-full flex items-center justify-center hover:bg-white transition shadow-lg"><i class="fa-solid fa-chevron-left"></i></button>
-                                                        <button @click.stop="activeSlide = activeSlide === slides.length - 1 ? 0 : activeSlide + 1" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 text-gray-800 w-12 h-12 rounded-full flex items-center justify-center hover:bg-white transition shadow-lg"><i class="fa-solid fa-chevron-right"></i></button>
+                                                        <button @click.stop="activeSlide = activeSlide === 0 ? slides.length - 1 : activeSlide - 1" class="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 bg-white/80 text-gray-800 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center hover:bg-white transition shadow-lg"><i class="fa-solid fa-chevron-left"></i></button>
+                                                        <button @click.stop="activeSlide = activeSlide === slides.length - 1 ? 0 : activeSlide + 1" class="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 bg-white/80 text-gray-800 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center hover:bg-white transition shadow-lg"><i class="fa-solid fa-chevron-right"></i></button>
                                                     </div>
                                                 </template>
                                             </div>
-                                            <div class="w-full md:w-5/12 p-8 overflow-y-auto bg-white flex flex-col">
-                                                <h3 class="text-2xl font-bold text-slate-800 mb-4">{{ $room->name ?? 'Matrimoniale con balcone' }}</h3>
-                                                <p class="text-gray-500 text-sm leading-relaxed mb-8 font-light">{{ $room->description ?? '...' }}</p>
-                                                <h4 class="text-sm font-semibold text-slate-800 mb-4">Servizi inclusi</h4>
-                                                <ul class="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-4 text-sm text-slate-600">
-                                                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-yellow-500"></i> Wi-Fi gratis</li>
-                                                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-yellow-500"></i> Aria condizionata</li>
-                                                    <li class="flex items-center gap-2"><i class="fa-solid fa-check text-yellow-500"></i> Bagno privato</li>
-                                                </ul>
+
+                                            {{-- 2. CONTENITORE TESTO: flex-1 per occupare il resto, e overflow-y-auto per renderlo scorrevole --}}
+                                            <div class="w-full md:w-5/12 flex-1 p-6 sm:p-8 overflow-y-auto bg-white flex flex-col min-h-0">
+
+                                                {{-- Contenuto Superiore --}}
+                                                <div class="flex-grow">
+                                                    <h3 class="text-2xl font-bold text-slate-800 mb-3 sm:mb-4">{{ $room->name ?? 'Matrimoniale con balcone' }}</h3>
+                                                    <p class="text-gray-500 text-sm leading-relaxed mb-6 sm:mb-8 font-light">{{ $room->description ?? '...' }}</p>
+
+                                                    <h4 class="text-sm font-semibold text-slate-800 mb-3 sm:mb-4">Servizi inclusi</h4>
+                                                    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-4 text-sm text-slate-600 mb-6">
+                                                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-yellow-500"></i> Wi-Fi gratis</li>
+                                                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-yellow-500"></i> Aria condizionata</li>
+                                                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-yellow-500"></i> Bagno privato</li>
+                                                    </ul>
+                                                </div>
+
+                                                {{-- Elemento Ancorato in Basso --}}
+                                                {{-- mt-auto spinge la sezione sul fondo, pt-4 mette sicurezza dal testo sopra, border-t dà un tocco pulito da hotel --}}
+                                                <div class="mt-auto pt-4 border-t border-gray-100 flex items-center gap-2 text-slate-700 font-medium text-sm">
+                                                    <i class="fa-solid fa-user-group text-slate-400 text-base"></i>
+                                                    <span>Capacità: <strong class="text-slate-900">{{ $room->beds ?? '2' }} ospiti</strong></span>
+                                                </div>
 
                                             </div>
+
                                         </div>
                                     </div>
                                 </template>
@@ -380,19 +364,17 @@
 
                             {{-- Dettagli Camera --}}
                             <div class="w-full md:w-2/3 flex flex-col">
-                                <div class="p-5 flex-grow">
+                                <div class="p-4 sm:p-5 flex-grow">
                                     <div class="flex justify-between items-start mb-3">
-                                        <h3 class="text-xl font-bold text-gray-800">{{ $room->name }}</h3>
-                                        <span class="text-sm font-bold text-gray-800">Servizi</span>
+                                        <h3 class="text-lg sm:text-xl font-bold text-gray-800">{{ $room->name }}</h3>
+                                        <span class="hidden sm:block text-sm font-bold text-gray-800">Servizi</span>
                                     </div>
-                                    <div class="flex flex-col md:flex-row gap-6">
-                                        <div class="w-full md:w-1/2">
+                                    <div class="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                                        <div class="w-full sm:w-1/2">
                                             <p class="text-sm text-gray-600 line-clamp-3">{{ $room->description }}</p>
-                                            <a href="#" @click.prevent="isModalOpen = true" class="text-yellow-600 text-sm font-medium hover:underline mt-1 inline-block">
-                                                continua
-                                            </a>
+                                            <a href="#" @click.prevent="isModalOpen = true" class="text-yellow-600 text-sm font-medium hover:underline mt-1 inline-block">continua</a>
                                         </div>
-                                        <div class="w-full md:w-1/2 grid grid-cols-2 gap-y-2 text-sm text-gray-600">
+                                        <div class="w-full sm:w-1/2 grid grid-cols-2 gap-y-2 text-xs sm:text-sm text-gray-600 bg-gray-50 sm:bg-transparent p-3 sm:p-0 rounded-lg sm:rounded-none">
                                             <div class="flex items-center gap-2"><i class="fa-solid fa-check text-yellow-500"></i> Wi-Fi gratis</div>
                                             <div class="flex items-center gap-2"><i class="fa-solid fa-check text-yellow-500"></i> Aria cond.</div>
                                             <div class="flex items-center gap-2"><i class="fa-solid fa-check text-yellow-500"></i> Bagno privato</div>
@@ -401,25 +383,23 @@
                                     </div>
                                 </div>
 
-                                {{-- Barra inferiore prezzo e bottone (DINAMICA) --}}
-                                <div class="bg-gray-50 border-t border-gray-100 p-4 flex items-center justify-end gap-4">
-                                    <div class="text-right">
+                                {{-- FIX MOBILE: Barra inferiore disposta su colonna per smartphone, riga per schermi grandi --}}
+                                <div class="bg-gray-50 border-t border-gray-100 p-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between sm:justify-end gap-3 sm:gap-4">
+                                    <div class="text-left sm:text-right flex flex-row sm:flex-col justify-between items-center sm:items-end">
                                         <span class="text-xs text-gray-500 block">prezzo di partenza</span>
-                                        <span class="text-2xl font-bold text-gray-800">
-                                            da <span class="text-yellow-600">€{{ number_format($room->price * 100 ?? 0, 0, ',', '.') }}</span>
+                                        <span class="text-xl sm:text-2xl font-bold text-gray-800">
+                                            da <span class="text-yellow-600">€{{ number_format($room->price / 100 ?? 0, 2, ',', '.') }}</span>
                                             @if(!isset($checkIn)) <span class="text-sm text-gray-500 font-normal">/notte</span> @endif
                                         </span>
                                     </div>
 
                                     @if(isset($checkIn) && isset($checkOut))
-                                    {{-- Bottone Info e Prenota (Solo se ci sono le date) --}}
-                                    <button @click="openRates = !openRates" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-6 rounded transition flex items-center gap-2">
+                                    <button @click="openRates = !openRates" class="w-full sm:w-auto bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-6 rounded transition flex items-center justify-center gap-2 text-sm sm:text-base">
                                         INFO E PRENOTA
                                         <i class="fa-solid" :class="openRates ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
                                     </button>
                                     @else
-                                    {{-- Bottone Inserisci Date (Vetrina iniziale, scrolla al calendario) --}}
-                                    <button type="button" onclick="..." class="bg-[#354F42] hover:bg-[#263C32] text-white font-bold py-3 px-6 rounded shadow-sm transition flex items-center gap-2">
+                                    <button type="button" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-full sm:w-auto bg-[#354F42] hover:bg-[#263C32] text-white font-bold py-3 px-6 rounded shadow-sm transition flex items-center justify-center gap-2 text-sm sm:text-base">
                                         INSERISCI DATE
                                         <i class="fa-regular fa-calendar-days"></i>
                                     </button>
@@ -428,7 +408,7 @@
                             </div>
                         </div>
 
-                        {{-- Tendina Tariffe: Visibile SOLO se l'utente ha inserito le date --}}
+                        {{-- Tendina Tariffe --}}
                         @if(isset($checkIn) && isset($checkOut))
                         <div x-show="openRates" x-collapse class="bg-white border-t-2 border-gray-200">
                             <div class="hidden md:grid grid-cols-12 gap-4 bg-gray-100 p-3 text-xs font-bold text-gray-600 uppercase">
@@ -439,25 +419,25 @@
 
                             @foreach($room->rates ?? [
                             (object)['id' => 1, 'name' => 'Camera e colazione', 'desc' => 'La scelta semplice e flessibile', 'price' => $room->price, 'is_best' => true],
-                            (object)['id' => 2, 'name' => 'Mezza pensione', 'desc' => 'Cena inclusa nel ristorante', 'price' => $room->price + 120, 'is_best' => false]
+                            (object)['id' => 2, 'name' => 'Mezza pensione', 'desc' => 'Cena inclusa nel ristorante', 'price' => $room->price + 2000, 'is_best' => false]
                             ] as $rate)
-                            <div class="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 border-b border-gray-100 items-center {{ $rate->is_best ? 'bg-green-50/50' : 'hover:bg-gray-50' }}">
+                            <div class="flex flex-col md:grid md:grid-cols-12 gap-2 md:gap-4 p-4 border-b border-gray-100 md:items-center {{ $rate->is_best ? 'bg-green-50/50' : 'hover:bg-gray-50' }}">
                                 <div class="md:col-span-4">
                                     <p class="font-medium text-gray-800">{{ $rate->desc }}</p>
                                 </div>
                                 <div class="md:col-span-5">
-                                    <p class="font-bold text-gray-800">{{ $rate->name }}</p>
-                                    <p class="text-xs text-gray-500 mb-1">Prezzo per le date selezionate - {{ request('adults', 2) }} adulti</p>
-                                    <a href="#" class="text-xs text-blue-600 hover:underline"><i class="fa-solid fa-circle-info"></i> Condizioni</a>
+                                    <p class="font-bold text-gray-800 text-sm md:text-base">{{ $rate->name }}</p>
+                                    <p class="text-xs text-gray-500 mb-1">Prezzo per {{ request('adults', 2) }} adulti</p>
                                 </div>
-                                <div class="md:col-span-3 flex justify-between items-center md:flex-col md:items-end gap-2 border-t md:border-t-0 pt-3 md:pt-0 mt-3 md:mt-0">
-                                    <div class="text-left md:text-right">
-                                        <span class="text-xl font-bold text-gray-800 block">€{{ number_format($rate->price * 100, 0, ',', '.') }}</span>
+                                {{-- FIX MOBILE: Spaziatura e larghezza bottone tariffe per renderlo tappabile col dito --}}
+                                <div class="md:col-span-3 flex flex-col md:items-end gap-3 border-t md:border-t-0 pt-3 md:pt-0 mt-2 md:mt-0 items-stretch">
+                                    <div class="flex justify-between md:flex-col md:text-right items-center md:items-end">
+                                        <span class="text-xl md:text-2xl font-bold text-gray-800 block">€{{ number_format($rate->price / 100, 0, ',', '.') }}</span>
                                         @if($rate->is_best)
                                         <span class="text-xs text-green-600 font-bold flex items-center gap-1 justify-end"><i class="fa-regular fa-thumbs-up"></i> Miglior prezzo</span>
                                         @endif
                                     </div>
-                                    <a href="{{ route('summary', $room->id ?? 1) }}" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-6 rounded shadow-sm transition">
+                                    <a href="{{ route('summary', $room->id ?? 1) }}" class="text-center bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 md:py-2 px-6 rounded shadow-sm transition w-full md:w-auto">
                                         CONTINUA
                                     </a>
                                 </div>
@@ -468,15 +448,14 @@
 
                     </div>
                     @empty
-                    <div class="bg-white p-12 rounded shadow flex flex-col items-center justify-center text-center">
-                        <h3 class="text-2xl font-semibold text-gray-800 mb-2">Nessuna camera trovata</h3>
-                        <p class="text-gray-500 mb-8 max-w-md">Prova a modificare le date o il numero di ospiti per trovare altre soluzioni.</p>
+                    <div class="bg-white p-8 sm:p-12 rounded-lg shadow-sm flex flex-col items-center justify-center text-center">
+                        <i class="fa-regular fa-face-frown-open text-4xl text-gray-300 mb-4"></i>
+                        <h3 class="text-xl sm:text-2xl font-semibold text-gray-800 mb-2">Nessuna camera trovata</h3>
+                        <p class="text-gray-500 max-w-md text-sm sm:text-base">Prova a modificare le date o il numero di ospiti per trovare altre soluzioni.</p>
                     </div>
                     @endforelse
                 </div>
 
-                {{-- SCRIPT PER IL CALENDARIO INLINE --}}
-                {{-- SCRIPT PER IL CALENDARIO INLINE --}}
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
                         flatpickr("#inline-calendar-container", {
@@ -484,12 +463,33 @@
                             mode: "range",
                             minDate: "today",
                             showMonths: 1,
+                            minRangeDays: 1,
                             locale: "it",
                             dateFormat: "d-m-Y",
-                            monthSelectorType: "static", // FORMATO ESATTO PER CARBON (dd-mm-yyyy)
+                            monthSelectorType: "static",
                             onChange: function(selectedDates, dateStr, instance) {
+                                // 1. INTERCETTAZIONE INTERATTIVA: Se l'utente seleziona due date identiche (0 notti)
+                                if (selectedDates.length === 2) {
+                                    const checkInTime = selectedDates[0].getTime();
+                                    const checkOutTime = selectedDates[1].getTime();
 
-                                // Salviamo la stringa generata (es. "20-06-2026 to 23-06-2026")
+                                    if (checkInTime === checkOutTime) {
+                                        // Forza Flatpickr a dimenticare il secondo click, mantenendo solo il check-in
+                                        instance.setDate([selectedDates[0]], false);
+
+                                        // Aggiorna l'interfaccia avvisando visivamente l'utente
+                                        document.getElementById('display-checkout').innerText = "Scegli un giorno successivo";
+                                        document.getElementById('display-checkout').classList.add('text-red-500', 'animate-pulse');
+                                        document.getElementById('display-nights').innerText = "0";
+                                        document.getElementById('date-range-input').value = "";
+                                        return; // Interrompe l'esecuzione così non aggiorna i dati con date errate
+                                    }
+                                }
+
+                                // Rimozione di eventuali classi di errore se la selezione è valida
+                                document.getElementById('display-checkout').classList.remove('text-red-500', 'animate-pulse');
+
+                                // 2. LOGICA STANDARD DI AGGIORNAMENTO
                                 document.getElementById('date-range-input').value = dateStr;
 
                                 const options = {
@@ -498,12 +498,14 @@
                                     year: 'numeric'
                                 };
 
+                                // Gestione Check-in
                                 if (selectedDates.length > 0) {
                                     document.getElementById('display-checkin').innerText = selectedDates[0].toLocaleDateString('it-IT', options);
                                 } else {
                                     document.getElementById('display-checkin').innerText = "Seleziona";
                                 }
 
+                                // Gestione Check-out e Notti
                                 if (selectedDates.length > 1) {
                                     document.getElementById('display-checkout').innerText = selectedDates[1].toLocaleDateString('it-IT', options);
 
@@ -518,4 +520,7 @@
                         });
                     });
                 </script>
+            </div>
+        </div>
+    </div>
 </x-layoutBooking>
